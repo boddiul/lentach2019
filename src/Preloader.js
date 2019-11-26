@@ -53,6 +53,14 @@ States.Preloader.prototype = {
         this.load.image('common-goback','assets/common/arrow.png');
 
         this.load.image('volley-back','assets/volley/back.png');
+        this.load.image('volley-left_down_btn','assets/volley/left_down_btn.png');
+        this.load.image('volley-left_up_btn','assets/volley/left_up_btn.png');
+        this.load.image('volley-right_down_btn','assets/volley/right_down_btn.png');
+        this.load.image('volley-right_up_btn','assets/volley/right_up_btn.png');
+        this.load.image('net','assets/volley/net.png');
+        this.load.spritesheet('volley-player','assets/volley/player.png',135,234);
+        this.load.spritesheet('volley-ment','assets/volley/ment.png',135,234);
+        this.load.image('drugs','assets/volley/drugs.png');
 
         this.load.image('pacman-back','assets/pacman/back.png');
 
