@@ -40,6 +40,12 @@ States.Volleyball.prototype = {
         group = game.add.group();
         group.create(0,0,'volley-back');
         group.create(110,522,'net');
+        shadow = group.create(pl_left,pl_up,'shadow').moveUp();
+        shadow.alpha = 0;
+        shadow.pivot.x = 20;
+        shadow.pivot.y = 25;
+       
+
         
         //Игрок
         player = group.create(pl_left,pl_up,'volley-player');
@@ -133,8 +139,20 @@ function Jump(){
                 
         }
 }
+
+function Shadow(){
+    shadow.scale.x=1;
+    shadow.scale.y=1;
+    shadow.alpha = 0;
+    shadowTween = game.add.tween(shadow.scale).to({ x: 3, y: 3 }, 1200, Phaser.Easing.Linear.None, true);
+    shadowAlphaTween =game.add.tween(shadow).to( { alpha: 1 }, 1200, "Linear", true); 
+}
+
 function throwBall(ball,x,y,GolunovThrow)
 {
+    shadow.x = x;
+    shadow.y = y;
+    Shadow();
     canTrow = false;
     drugstweenX = game.add.tween(ball).to( {x:x}, 1200, Phaser.Easing.Quadratic.Out, true)
     //половина траэктории по Y
@@ -204,6 +222,7 @@ function throwBall(ball,x,y,GolunovThrow)
                     random_y = pl_down;
                     drugs.x = random_x;
                     drugs.y = random_y;
+                    shadow.alpha = 0;
             },this);
         }
     }
@@ -220,6 +239,7 @@ function throwBall(ball,x,y,GolunovThrow)
                 random_y = enemy_up;
                 drugs.x = enemy_right;
                 drugs.y = enemy_up;
+                shadow.alpha = 0;
             },this);
         game.time.events.add(Phaser.Timer.SECOND * 2, throwBack, this);;
     }

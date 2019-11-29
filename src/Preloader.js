@@ -61,6 +61,7 @@ States.Preloader.prototype = {
         this.load.spritesheet('volley-player','assets/volley/player.png',135,234);
         this.load.spritesheet('volley-ment','assets/volley/ment.png',135,234);
         this.load.image('drugs','assets/volley/drugs.png');
+        this.load.image('shadow','assets/volley/shadow.png');
 
         this.load.image('pacman-back','assets/pacman/back.png');
 
