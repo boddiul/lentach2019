@@ -71,6 +71,7 @@ States.Preloader.prototype = {
         this.load.image('burger','assets/burger/burger.png');
         this.load.image('burger-hole','assets/burger/hole.png');
         this.load.image('burger-flag','assets/burger/flag.png');
+        this.load.image('burger-poop','assets/burger/poop.png');
 
         this.load.image('fire-back','assets/fire/back.png');
 
