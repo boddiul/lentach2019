@@ -64,6 +64,14 @@ States.Preloader.prototype = {
         this.load.image('shadow','assets/volley/shadow.png');
 
         this.load.image('pacman-back','assets/pacman/back.png');
+        this.load.image('pacman-player','assets/pacman/player.png');
+        this.load.image('pacman-enemy','assets/pacman/enemy.png');
+        this.load.image('pacman-block','assets/pacman/block.png');
+        this.load.spritesheet('pacman-coin','assets/pacman/coin.png',48,48);
+
+
+        this.load.image('pacman-big_circle','assets/pacman/circle_big.png');
+        this.load.image('pacman-small_circle','assets/pacman/circle_small.png');
 
         this.load.image('pvz-back','assets/pvz/back.png');
 
