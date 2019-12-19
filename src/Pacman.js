@@ -60,7 +60,7 @@ States.Pacman.prototype = {
 
         update()
         {
-            if(!this.global.game.input.activePointer﻿.isDown) /*x===-1 && y===-1*/
+            if(!this.global.game.input.activePointer.isDown) /*x===-1 && y===-1*/
             {
 
                 this.small_circle.x = this.x;
@@ -77,10 +77,12 @@ States.Pacman.prototype = {
                 if (dir>4)
                     dir =0;
 
-
-                this.global.player.setControl(dir);
-
                 let dist = Phaser.Point.distance({x:this.x,y:this.y},{x:x,y:y});
+
+                if (dist>20)
+                    this.global.player.setControl(dir);
+
+
 
                 if (dist<60)
                 {
@@ -117,9 +119,21 @@ States.Pacman.prototype = {
 
 
             this.sprite = this.global.game.add.sprite(
-                this.global.xOff+posX*this.global.blockSize,
-                this.global.yOff+posY*this.global.blockSize,
+                this.global.xOff+24+posX*this.global.blockSize,
+                this.global.yOff+24+posY*this.global.blockSize,
                 isPlayer ? 'pacman-player': 'pacman-enemy');
+
+            this.sprite.anchor.set(0.5,0.5);
+
+            if (!isPlayer)
+                this.sprite.frame = Math.round(Math.random());
+            else
+            {
+                this.sprite.animations.add('run',[0,1],5,true);
+                this.sprite.animations.play('run')
+
+
+            }
 
             this.o = 0;
         }
@@ -203,7 +217,7 @@ States.Pacman.prototype = {
                     }
 
 
-
+                        this.sprite.angle = 360-this.dir*90
                 }
                 else
                 {
@@ -255,8 +269,8 @@ States.Pacman.prototype = {
 
             if (!this.stopped)
             {
-                this.sprite.x = this.global.xOff+(this.posX+Math.cos(this.dir*90/180*Math.PI)*(1-this.o))*this.global.blockSize;
-                this.sprite.y = this.global.yOff+(this.posY-Math.sin(this.dir*90/180*Math.PI)*(1-this.o))*this.global.blockSize;
+                this.sprite.x = this.global.xOff+24+(this.posX+Math.cos(this.dir*90/180*Math.PI)*(1-this.o))*this.global.blockSize;
+                this.sprite.y = this.global.yOff+24+(this.posY-Math.sin(this.dir*90/180*Math.PI)*(1-this.o))*this.global.blockSize;
             }
 
 
@@ -333,13 +347,13 @@ States.Pacman.prototype = {
 
                 this.blockMap[i].push(t);
 
-                if (t===0)
+                if (t===0 && Math.random()>0.5)
                 {
                     this.coinMap[i].push(
                         this.game.add.sprite(
                         this.xOff+j*this.blockSize,
                         this.yOff+i*this.blockSize,
-                        'pacman-coin',Math.floor(Math.random()*2)));
+                        'pacman-coin',Math.floor(Math.random()*5)));
 
 
                 }
@@ -348,11 +362,11 @@ States.Pacman.prototype = {
                     this.coinMap[i].push(null);
                 }
 
-                if (t===1)
+               /* if (t===1)
                     this.game.add.sprite(
                         this.xOff+j*this.blockSize,
                         this.yOff+i*this.blockSize,
-                        'pacman-block')
+                        'pacman-block')*/
             }
         }
 

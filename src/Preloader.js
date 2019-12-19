@@ -39,6 +39,7 @@ States.Preloader.prototype = {
         this._loadingMask.scale.x = 0;
 
 
+        this.game.add.text(0, 0, "fix", {font:"1px PIX"})﻿﻿;
 
         this.load.image('main-back','assets/main/back.png');
 
@@ -48,9 +49,21 @@ States.Preloader.prototype = {
         this.load.image('main-goto4','assets/main/goto4.png');
         this.load.image('main-goto5','assets/main/goto5.png');
 
+        this.load.image('main-button_clear','assets/main/button_clear.png');
+        this.load.spritesheet('main-button_shop','assets/main/button_shop.png',50,50);
+
+        this.load.spritesheet('main-locked','assets/main/locked.png',50,50);
+        this.load.spritesheet('main-booster','assets/main/button_booster.png',50,50);
+        this.load.spritesheet('main-level','assets/main/button_level.png',50,50);
+        this.load.spritesheet('main-clicker','assets/main/button_clicker.png',225,90);
+
+        this.load.spritesheet('main-pepe','assets/main/pepe.png',50,50);
+        this.load.image('main-bubble','assets/main/bubble.png');
 
 
         this.load.image('common-goback','assets/common/arrow.png');
+        this.load.spritesheet('common-message','assets/common/message.png',280,380);
+        this.load.spritesheet('common-button','assets/common/message_button.png',232,36);
 
         this.load.image('volley-back','assets/volley/back.png');
         this.load.image('volley-left_down_btn','assets/volley/left_down_btn.png');
@@ -64,9 +77,9 @@ States.Preloader.prototype = {
         this.load.image('shadow','assets/volley/shadow.png');
 
         this.load.image('pacman-back','assets/pacman/back.png');
-        this.load.image('pacman-player','assets/pacman/player.png');
-        this.load.image('pacman-enemy','assets/pacman/enemy.png');
-        this.load.image('pacman-block','assets/pacman/block.png');
+        this.load.spritesheet('pacman-player','assets/pacman/player.png',140/2,48);
+        this.load.spritesheet('pacman-enemy','assets/pacman/enemy.png',64,64);
+        //this.load.image('pacman-block','assets/pacman/block.png');
         this.load.spritesheet('pacman-coin','assets/pacman/coin.png',48,48);
 
 

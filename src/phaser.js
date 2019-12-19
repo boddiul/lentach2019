@@ -57671,7 +57671,7 @@ Phaser.Text.prototype._renderCanvas = function (renderSession) {
 */
 Phaser.Text.prototype.determineFontProperties = function (fontStyle) {
 
-    var properties = Phaser.Text.fontPropertiesCache[fontStyle];
+    var properties =null;// Phaser.Text.fontPropertiesCache[fontStyle];
 
     if (!properties)
     {
@@ -57682,8 +57682,8 @@ Phaser.Text.prototype.determineFontProperties = function (fontStyle) {
 
         context.font = fontStyle;
 
-        var width = Math.ceil(context.measureText('|MÉq').width);
-        var baseline = Math.ceil(context.measureText('|MÉq').width);
+        var width = Math.ceil(context.measureText('|MÉqi').width);
+        var baseline = Math.ceil(context.measureText('|MÉqi').width);
         var height = 2 * baseline;
 
         baseline = baseline * 1.4 | 0;

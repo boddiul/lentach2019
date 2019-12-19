@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'PIX';
+    src: url("pix.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fontLoader {
+    position: absolute;
+    left: -1000px;
+    visibility: hidden;
+}
