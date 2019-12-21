@@ -71,7 +71,7 @@ States.Preloader.prototype = {
         this.load.image('volley-right_down_btn','assets/volley/right_down_btn.png');
         this.load.image('volley-right_up_btn','assets/volley/right_up_btn.png');
         this.load.image('net','assets/volley/net.png');
-        this.load.spritesheet('volley-player','assets/volley/player.png',135,234);
+        this.load.spritesheet('volley-player','assets/volley/player.png',275,337);
         this.load.spritesheet('volley-ment','assets/volley/ment.png',135,234);
         this.load.image('drugs','assets/volley/drugs.png');
         this.load.image('shadow','assets/volley/shadow.png');
@@ -91,6 +91,7 @@ States.Preloader.prototype = {
         this.load.image('burger-back','assets/burger/back.png');
         this.load.image('burger','assets/burger/burger.png');
         this.load.image('burger-hole','assets/burger/hole.png');
+        this.load.image('burger-front','assets/burger/front.png');
         this.load.image('burger-flag','assets/burger/flag.png');
         this.load.image('burger-poop','assets/burger/poop.png');
 
