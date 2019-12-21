@@ -34,7 +34,7 @@ MessageBox = class {
         this.button = this.global.game.add.button(0,this.height*0.5 - this.bottom,'common-button',this.next,this);
 
         this.button_label = this.global.game.add.text(0,this.height*0.5 - this.bottom,'...',{font: '22pt PIX'});
-        this.button_label.anchor.setTo(0.5);﻿
+        this.button_label.anchor.setTo(0.5,0.5);﻿
 
 
         //this.button_label.padding.set(10, 10);
@@ -301,7 +301,7 @@ States.Main.prototype = {
             this.booster_lock.anchor.setTo(0.5,0.5);
             this.booster_lock.scale.setTo(2,2);
 
-            this.booster_label = this.global.game.add.text(xx,600+80,'',{font: '16pt PIX'})
+            this.booster_label = this.global.game.add.text(xx,600+80,'',{font: '16pt PIX'});
 
             this.booster_label.anchor.setTo(0.5);﻿
 
