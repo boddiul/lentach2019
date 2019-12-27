@@ -96,8 +96,9 @@ States.Preloader.prototype = {
         this.load.image('burger-poop','assets/burger/poop.png');
 
         this.load.image('fire-back','assets/fire/back.png');
-        this.load.spritesheet('fire-fire','assets/fire/fire.png',225,260);
-        this.load.spritesheet('fire-tree','assets/fire/tree.png',240,280);
+        this.load.image('fire-fog','assets/fire/fog.png');
+        this.load.spritesheet('fire-fire','assets/fire/fire.png',120,184);
+        this.load.spritesheet('fire-tree','assets/fire/tree.png',288,246);
         this.load.spritesheet('fire-heli','assets/fire/heli.png',192,192);
         this.load.image('fire-water','assets/fire/water.png');
 

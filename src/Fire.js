@@ -13,7 +13,7 @@ States.Fire.prototype = {
     heli : [],
     trees : [],
     tree_h : 5,
-    full_h : 600,
+    full_h : 700,
 
 
 
@@ -31,18 +31,25 @@ States.Fire.prototype = {
             let xx =WIDTH/3*(id+0.5);
 
             this.line = this.global.game.add.sprite(xx,0,'fire-fire');
-            this.line.anchor.set(0.5);
+            this.line.anchor.set(0,0.5);
 
-            this.line.animations.add('run',[0,1],7,true);
+            this.line.animations.add('run',[0,1,2,3,4,5],7,true);
             this.line.animations.play('run');
 
+            this.line2 = this.global.game.add.sprite(xx,0,'fire-fire');
+            this.line2.anchor.set(1,0.5);
 
-            this.big = this.global.game.add.sprite(xx,HEIGHT-260/2,'fire-fire');
+            this.line2.animations.add('run',[4,5,0,1,2,3],7,true);
+            this.line2.animations.play('run');
+
+
+
+            /*this.big = this.global.game.add.sprite(xx,HEIGHT-260/2,'fire-fire');
             this.big.anchor.set(0.5);
 
             this.big.animations.add('run',[2,3],8,true);
             this.big.animations.play('run');
-            this.big.alpha = 0;
+            this.big.alpha = 0;*/
 
         }
 
@@ -62,7 +69,7 @@ States.Fire.prototype = {
             if (this.progress<0)
                 this.progress = 0;
 
-
+/*
             if (this.progress>0.5)
             {
                 if (this.big.alpha<1)
@@ -72,10 +79,10 @@ States.Fire.prototype = {
             {
                 if (this.big.alpha>0)
                     this.big.alpha-=0.05;
-            }
+            }*/
 
             this.line.y = HEIGHT-this.global.full_h*this.progress;
-
+            this.line2.y = this.line.y
 
         }
     },
@@ -89,7 +96,7 @@ States.Fire.prototype = {
             this.id = id;
 
             this.cx =WIDTH/3*(id+0.5);
-            this.cy = 300;
+            this.cy = 250;
 
 
 
@@ -103,6 +110,10 @@ States.Fire.prototype = {
             else
                 this.sprite.animations.add('run',[1,0],5,true);
 
+
+            if (Math.random()>0.5)
+                this.sprite.scale.setTo(-1,1);
+
             this.sprite.animations.play('run');
 
 
@@ -111,6 +122,7 @@ States.Fire.prototype = {
 
             this.emitter.setXSpeed(-10, 10);
             this.emitter.setYSpeed(50, 150);
+            this.emitter.setRotation(0, 0);
             this.emitter.makeParticles('fire-water', 0, 250, true, true);
 
            // this.emitter.bottom = HEIGHT-300;
@@ -196,7 +208,7 @@ States.Fire.prototype = {
 
 
             this.emitter.x = this.sprite.x;
-            this.emitter.y = this.sprite.y+50;
+            this.emitter.y = this.sprite.y+90;
 
         }
     },
@@ -221,10 +233,7 @@ States.Fire.prototype = {
 
     create: function () {
         this.game.add.sprite(0,0,'fire-back');
-        this.add.button(0, 0, 'common-goback', function () {
 
-            game.exitMiniGameSignal.dispatch();
-        },this);
 
         this.trees = [];
 
@@ -233,7 +242,11 @@ States.Fire.prototype = {
             this.trees.push([]);
             for (j=0;j<this.tree_h;j++)
             {
-                let o = this.game.add.image(i*WIDTH/3,HEIGHT-50-140*(this.tree_h-j),'fire-tree',Math.random()>0.5 ? 0: 2);
+                let o = this.game.add.image(i*WIDTH/3+288/2-20,HEIGHT-50-160*(this.tree_h-j),'fire-tree',Math.random()>0.5 ? 0: 2);
+
+                o.anchor.setTo(0.5,0);
+                if (Math.random()>0.5)
+                    o.scale.setTo(-1,1);
                 this.trees[i].push(o);
 
             }
@@ -241,9 +254,20 @@ States.Fire.prototype = {
         }
 
 
+
+
+
+        this.fog = this.game.add.sprite(0,0,'fire-fog');
+        this.fog.alpha = 0;
+
         this.heli = [new this.Heli(this,0),new this.Heli(this,1),new this.Heli(this,2)];
         this.fire = [new this.ForestFire(this,0),new this.ForestFire(this,1),new this.ForestFire(this,2)];
 
+
+        this.add.button(0, 0, 'common-goback', function () {
+
+            game.exitMiniGameSignal.dispatch();
+        },this);
 
         this.game.input.onDown.add(this.onDown,this);
     },
@@ -256,12 +280,15 @@ States.Fire.prototype = {
             this.fire[i].update();
         }
 
+        this.fog.alpha = Math.max(this.fire[0].progress,this.fire[1].progress,this.fire[2].progress);
 
         for (let i=0;i<3;i++)
             for (let j=0;j<this.tree_h;j++)
             {
-                if (this.trees[i][j].y>this.fire[i].line.y)
+                if (this.trees[i][j].y>this.fire[i].line.y-170)
                 {
+                    console.log("?????DAFAFDF");
+
                     if (this.trees[i][j].frame===0)
                         this.trees[i][j].frame = 1;
                     if (this.trees[i][j].frame===2)
@@ -269,6 +296,8 @@ States.Fire.prototype = {
 
                 }
             }
+
+
 
     }
 
