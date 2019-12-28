@@ -43,18 +43,22 @@ States.Preloader.prototype = {
 
         this.load.image('main-back','assets/main/back.png');
 
-        this.load.image('main-goto1','assets/main/goto1.png');
-        this.load.image('main-goto2','assets/main/goto2.png');
-        this.load.image('main-goto3','assets/main/goto3.png');
-        this.load.image('main-goto4','assets/main/goto4.png');
-        this.load.image('main-goto5','assets/main/goto5.png');
+
 
         this.load.image('main-button_clear','assets/main/button_clear.png');
-        this.load.spritesheet('main-button_shop','assets/main/button_shop.png',50,50);
+        this.load.spritesheet('main-button_shop','assets/main/button_shop.png',32,32);
+        this.load.spritesheet('main-button_sound','assets/main/button_sound.png',32,32);
 
         this.load.spritesheet('main-locked','assets/main/locked.png',50,50);
-        this.load.spritesheet('main-booster','assets/main/button_booster.png',50,50);
-        this.load.spritesheet('main-level','assets/main/button_level.png',50,50);
+        //this.load.spritesheet('main-booster','assets/main/button_booster.png',50,50);
+
+        this.load.spritesheet('main-booster0','assets/main/booster0.png',50,50);
+        this.load.spritesheet('main-booster1','assets/main/booster1.png',50,50);
+        this.load.spritesheet('main-booster2','assets/main/booster2.png',50,50);
+        this.load.spritesheet('main-booster3','assets/main/booster3.png',50,50);
+        this.load.spritesheet('main-booster4','assets/main/booster4.png',50,50);
+
+        this.load.spritesheet('main-level','assets/main/button_level.png',72,72);
         this.load.spritesheet('main-clicker','assets/main/button_clicker.png',225,90);
 
         this.load.spritesheet('main-pepe','assets/main/pepe.png',50,50);

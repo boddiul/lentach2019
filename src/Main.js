@@ -309,7 +309,7 @@ States.Main.prototype = {
 
 
     BoosterStageControl : class {
-        constructor(global,lvl_index,lvl_id,price,boost)
+        constructor(global,lvl_index,lvl_id,price,ico_txt,boost)
         {this.global=global;
 
 
@@ -321,7 +321,7 @@ States.Main.prototype = {
             this.price = price;
 
             let xx = 30+lvl_index*(100+40)+50;
-            this.booster_button = this.global.add.button(xx,600,'main-booster', function () {
+            this.booster_button = this.global.add.button(xx,700,'main-booster'+lvl_index, function () {
 
 
                 if (this.global.game_data.score>=this.price) {
@@ -334,11 +334,27 @@ States.Main.prototype = {
                     this.global.message_box.show("boost_cant",this.lvl_index);
                 }
 
-            },this,lvl_index,lvl_index);
+            },this,0);
             this.booster_button.anchor.setTo(0.5,0.5);
             this.booster_button.scale.setTo(2,2);
 
-            this.level_button = this.global.add.button(xx,600-100-40,'main-level', function () {
+
+
+            /*let lx = 0; let ly = lvl_index<3 ? 0 :1;
+
+            switch(lvl_index)
+            {
+                case 0: lx = -1; break;
+                case 2: lx = 1; break;
+                case 3: lx = -0.5;break;
+                case 4: lx = 0.5;break;
+            }*/
+
+            let yy = 680-100-100+(lvl_index%2)*50;
+            this.level_button = this.global.add.button(
+                /*WIDTH/2+lx*210,480-100-40+ly*180,*/
+                xx,yy,
+                'main-level', function () {
 
                 if (!this.global.hud_busy())
                 {
@@ -350,7 +366,14 @@ States.Main.prototype = {
             },this,lvl_index,lvl_index);
             this.level_button.anchor.setTo(0.5,0.5);
             this.level_button.scale.setTo(2,2);
-            this.booster_lock = this.global.add.button(xx,600,'main-locked',function () {
+
+
+            this.level_label = this.global.game.add.text(xx,yy+90,ico_txt,{font: '12pt PIX'});
+            this.level_label.addColor("#ffffff",0);
+            this.level_label.anchor.setTo(0.5);﻿
+            this.level_label.visible = false;
+
+            this.booster_lock = this.global.add.button(xx,700,'main-locked',function () {
 
                 if (!this.global.hud_busy()) {
 
@@ -377,8 +400,8 @@ States.Main.prototype = {
             this.booster_lock.anchor.setTo(0.5,0.5);
             this.booster_lock.scale.setTo(2,2);
 
-            this.booster_label = this.global.game.add.text(xx,600+80,'',{font: '16pt PIX'});
-
+            this.booster_label = this.global.game.add.text(xx,700+80,'',{font: '16pt PIX'});
+            this.booster_label.addColor("#ffffff",0);
             this.booster_label.anchor.setTo(0.5);﻿
 
 
@@ -411,6 +434,7 @@ States.Main.prototype = {
             {
                 this.booster_lock.visible = false;
                 this.level_button.visible = true;
+                this.level_label.visible = true;
                 this.booster_label.text = this.num+'x'+this.boost;
             }
 
@@ -547,7 +571,7 @@ States.Main.prototype = {
 
             this.global=global;
 
-            this.button = this.global.add.button(WIDTH/2,900,'main-clicker', function () {
+            this.button = this.global.add.button(WIDTH/2,950,'main-clicker', function () {
 
 
 
@@ -693,17 +717,17 @@ States.Main.prototype = {
 
 
         this.boosters = [
-            new this.BoosterStageControl(this,0,'Volleyball',100,1),
-            new this.BoosterStageControl(this,1,'Pacman',500,2),
-            new this.BoosterStageControl(this,2,'Zombies',1000,5),
-            new this.BoosterStageControl(this,3,'Burger',5000,13),
-            new this.BoosterStageControl(this,4,'Fire',10000,47)];
+            new this.BoosterStageControl(this,0,'Volleyball',100,'podkid.exe',1),
+            new this.BoosterStageControl(this,1,'Pacman',500,'miting.exe',2),
+            new this.BoosterStageControl(this,2,'Zombies',1000,'musor.exe',5),
+            new this.BoosterStageControl(this,3,'Burger',5000,'burger.exe',13),
+            new this.BoosterStageControl(this,4,'Fire',10000,'fire.exe',47)];
 
 
 
         this.button_clicker = new this.ButtonClicker(this);
 
-        this.button_pepe = new this.PepeFabric(this,6,1.5,WIDTH/2,400,900-100,50);
+        this.button_pepe = new this.PepeFabric(this,6,1.5,WIDTH/2,400,970-100,50);
 
 
 
@@ -712,21 +736,33 @@ States.Main.prototype = {
 
 
 
-        this.button_clear = this.game.add.button(30+4*(100+40)+50,1100,'main-button_clear', function () {
+        this.button_clear = this.game.add.button(100,1125,'main-button_clear', function () {
             if (!this.hud_busy()) {
                 this.message_box.show("clear");
             }
         },this);
         this.button_clear.anchor.setTo(0.5,0.5);
-        this.button_clear.scale.setTo(2,2);
-        this.button_shop = this.game.add.button(30+0*(100+40)+50,1100,'main-button_shop', function () {
+        this.button_clear.scale.setTo(3,3);
+
+
+        this.button_shop = this.game.add.button(WIDTH/2,1125,'main-button_shop', function () {
 
         },this);
         this.button_shop.anchor.setTo(0.5,0.5);
-        this.button_shop.scale.setTo(2,2);
-        this.button_shop.visible = false;
+        this.button_shop.scale.setTo(3,3);
+
+        this.button_sound = this.game.add.button(WIDTH-100,1125,'main-button_sound', function () {
+
+        },this);
+        this.button_sound.anchor.setTo(0.5,0.5);
+        this.button_sound.scale.setTo(3,3);
+
+
+
+
         this.score_text = this.game.add.text(WIDTH/2,130,'0',{font: '25pt PIX'});
 
+        this.score_text.addColor("#ffffff", 0)﻿
 
 
 
