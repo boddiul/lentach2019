@@ -82,6 +82,9 @@ MessageBox = class {
 
 
 
+        this.opened = -1;
+
+        this.is_console = false;
 
         this.group = this.global.game.add.group();
 
@@ -149,17 +152,30 @@ MessageBox = class {
 
 
         this.global.game.input.onDown.add(this.onClick,this);
+
+        this.global.game.input.onUp.add(this.onUp,this);
     }
 
+    onUp() {
+        if (this.opened>0.5 && !this.group.visible)
+        {
+            let tw =this.global.game.add.tween(this);
+
+            tw.to({ opened:-1 },10);
+            tw.start();
+        }
+    }
 
     onClick() {
 
 
-        if (this.group.visible)
-        {
+        if (this.group.visible) {
             let clickedOnWindow =
-                Math.abs(this.global.game.input.x-WIDTH/2)<this.width/2 &&
-                Math.abs(this.global.game.input.y-HEIGHT/2)<this.height/2;
+                Math.abs(this.global.game.input.x - WIDTH / 2) < this.width[this.is_console ? 1 : 0] / 2 &&
+                Math.abs(this.global.game.input.y - HEIGHT / 2) < this.height[this.is_console ? 1 : 0] / 2;
+
+
+            console.log(clickedOnWindow)
 
 
             if (!this.button.visible)
@@ -322,6 +338,8 @@ MessageBox = class {
         }
 
 
+        this.is_console = is_console;
+        this.opened = 1;
 
         this.group.scale.setTo(0.8,0.8);
         let currentTween = this.global.game.add.tween(this.group.scale);
@@ -741,7 +759,7 @@ States.Main.prototype = {
     message_box : null,
 
     hud_busy : function() {
-        return this.message_box.group.visible;
+        return this.message_box.opened>0;
     },
 
     reset : function(){
