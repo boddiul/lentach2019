@@ -33,6 +33,7 @@ States.Pacman.prototype = {
 
     blockMap : [],
     coinMap : [],
+    stars: [],
 
     xOff : -48,
     yOff : 64*2,
@@ -60,7 +61,7 @@ States.Pacman.prototype = {
 
         update()
         {
-            if(!this.global.game.input.activePointer.isDown) /*x===-1 && y===-1*/
+            if(!this.global.game.input.activePointer.isDown || !this.global.canControl) /*x===-1 && y===-1*/
             {
 
                 this.small_circle.x = this.x;
@@ -113,9 +114,13 @@ States.Pacman.prototype = {
             this.posY = posY;
             this.dir = dir;
 
+
             this.controlledDir = 0;
 
             this.stopped = isPlayer;
+
+
+            this.initState = true;
 
 
             this.sprite = this.global.game.add.sprite(
@@ -132,6 +137,7 @@ States.Pacman.prototype = {
                 this.sprite.animations.add('run',[0,1],5,true);
                 this.sprite.animations.play('run')
 
+                this.hit = -1;
 
             }
 
@@ -144,6 +150,17 @@ States.Pacman.prototype = {
 
             let xx = -1;
             let yy = -1;
+
+
+            if (this.isPlayer) {
+
+                if (this.hit >= 0)
+                    this.hit -= 1 / 60;
+                else
+                    this.hit = -1;
+            }
+
+
             if (this.o <= 0)
             {
 
@@ -177,8 +194,17 @@ States.Pacman.prototype = {
                 if (this.isPlayer)
                 {
 
+
+
                     if (this.global.coinMap[this.posY][this.posX])
                     {
+                        this.global.total-=1;
+
+                        if (this.global.total<=0 && !this.endGame)
+                        {
+                            this.global.Win();
+                        }
+
                         this.global.coinMap[this.posY][this.posX].destroy();
                         this.global.coinMap[this.posY][this.posX] = null;
                     }
@@ -217,7 +243,9 @@ States.Pacman.prototype = {
                     }
 
 
-                        this.sprite.angle = 360-this.dir*90
+
+
+
                 }
                 else
                 {
@@ -259,13 +287,36 @@ States.Pacman.prototype = {
                     this.dir-=4;
 
 
+                if (this.isPlayer)
+                {
+
+                    if (!this.initState)
+                    {
+                        if (this.dir===2)
+                        {
+                            this.sprite.angle = 0;
+                            this.sprite.scale.setTo(-1,1);
+                        }
+                        else
+                        {
+                            this.sprite.angle = 360-this.dir*90;
+                            this.sprite.scale.setTo(1,1);
+
+                        }
+                    }
+                }
+
+
+
                 this.o+=1;
             }
             else
             {
 
             }
-            this.o-=1/this.spd;
+
+            if (this.global.canControl)
+                this.o-=1/this.spd;
 
             if (!this.stopped)
             {
@@ -281,14 +332,20 @@ States.Pacman.prototype = {
         setControl(dir) {
 
 
-            //console.log(dir);
-            this.controlledDir = dir-this.dir; //dir; //this.dir - dir;
-            //console.log(this.controlledDir);
-            if (this.controlledDir<-2)
-                this.controlledDir+=4;
 
-            if (this.controlledDir>1)
-                this.controlledDir-=4;
+            if (this.global.canControl)
+            {
+                this.initState = false;
+                //console.log(dir);
+                this.controlledDir = dir-this.dir; //dir; //this.dir - dir;
+                //console.log(this.controlledDir);
+                if (this.controlledDir<-2)
+                    this.controlledDir+=4;
+
+                if (this.controlledDir>1)
+                    this.controlledDir-=4;
+            }
+
         }
     },
 
@@ -333,7 +390,34 @@ States.Pacman.prototype = {
     create: function () {
 
         this.game.add.sprite(0,0,'pacman-back');
+
+
+        let star_x = 30;
+        let star_y = HEIGHT-170;
+
+
+
+        let pogon = this.game.add.sprite(star_x,star_y,'pacman-pogon');
+
+
+        this.stars = [null,null,null];
+
+        for (let i=0;i<3;i++)
+        {
+            this.stars[i] = this.game.add.sprite(star_x+40+50*i,star_y,'pacman-star');
+            this.stars[i].anchor.setTo(0.5);
+        }
+
+        this.hp = 3;
+
+
+        pogon.anchor.setTo(0,0.5);
+
+        this.total = 0;
+
+
         let t = -1;
+
         for (let i=0;i<this.blocksH;i++)
         {
             this.blockMap.push([]);
@@ -349,6 +433,8 @@ States.Pacman.prototype = {
 
                 if (t===0 && Math.random()>0.5)
                 {
+
+                    this.total+=1;
                     this.coinMap[i].push(
                         this.game.add.sprite(
                         this.xOff+j*this.blockSize,
@@ -371,9 +457,9 @@ States.Pacman.prototype = {
         }
 
         this.player.init(true,8,12,1,12);
-        this.enemy[0].init(false,8,6,1,14);
-        this.enemy[1].init(false,6,6,2,14);
-        this.enemy[2].init(false,10,6,3,14);
+        this.enemy[0].init(false,8,6,1,16);
+        this.enemy[1].init(false,6,6,2,16);
+        this.enemy[2].init(false,10,6,3,16);
 
         this.add.button(0, 0, 'common-goback', function () {
 
@@ -396,6 +482,12 @@ States.Pacman.prototype = {
         key.onDown.add(this.pressDown, this);
 
 
+        this.endGame = false;
+        this.canControl = false;
+
+        this.message_box = new MessageBox(this);
+        this.message_box.show("game_intro",1);
+
         //this.game.input.onHold.add(this.onDown,this);
         //this.game.input.onUp.add(this.onUp,this);
 
@@ -407,7 +499,53 @@ States.Pacman.prototype = {
         this.enemy[1].update();
         this.enemy[2].update();
 
+
+            for (let i=0;i<3;i++)
+                if (this.player.hit<0 && this.hp>0)
+            {
+                let d = Phaser.Math.distance(
+                    this.player.sprite.x,this.player.sprite.y,
+                    this.enemy[i].sprite.x,this.enemy[i].sprite.y);
+
+
+                if (d<this.blockSize*0.6)
+                {
+                    this.player.hit = 1;
+
+
+                    this.stars[this.hp-1].visible = false;
+                    this.hp-=1;
+
+                    if (this.hp <= 0 && !this.endGame)
+                    {
+                        this.Loose();
+                    }
+
+                }
+            }
+
+
+
         this.circle.update();
+    },
+
+    StartControl : function()
+    {
+        this.canControl = true;
+    },
+
+    Loose : function()
+    {
+        this.endGame = true;
+        this.canControl = false;
+        this.message_box.show("loose",1);
+    },
+
+    Win : function ()
+    {
+        this.endGame = true;
+        this.canControl = false;
+        this.message_box.show("win",1);
     }
 
 

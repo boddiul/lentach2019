@@ -87,8 +87,8 @@ States.Preloader.prototype = {
         this.load.spritesheet('pacman-enemy','assets/pacman/enemy.png',64,64);
         //this.load.image('pacman-block','assets/pacman/block.png');
         this.load.spritesheet('pacman-coin','assets/pacman/coin.png',48,48);
-
-
+        this.load.image('pacman-pogon','assets/pacman/pogon.png');
+        this.load.image('pacman-star','assets/pacman/star.png');
         this.load.image('pacman-big_circle','assets/pacman/circle_big.png');
         this.load.image('pacman-small_circle','assets/pacman/circle_small.png');
 

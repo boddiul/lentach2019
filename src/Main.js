@@ -272,8 +272,7 @@ MessageBox = class {
 
 
             case 'loose':
-                if (this.arg===0)
-                    game.state.start('Volleyball');
+                game.state.start(LVL[this.arg].name);
                 break;
         }
 
@@ -353,6 +352,9 @@ MessageBox = class {
                         'Позже оказалось, что пакет с веществами подкинули и журналиста отпустили из-за отсутствия доказательств его вины.\n' +
                         '\n' +
                         'Это, конечно, возмутительно. Но вы сами попробуйте нормально подкинуть пакет.';
+
+                if (arg===1)
+                    txt = 'текст про пакмана';
 
                 is_console = true;
 
