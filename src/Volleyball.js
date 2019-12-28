@@ -10,24 +10,32 @@ const enemy_left = 285;
 const enemy_right = 475;
 
 var winChance = 30;
+var winScore = 4;
 
-var canControl = true;
-var pointerWasDown = false;
-var firstPointerX = 0;
 
-var counter = 0;
-var random_x = pl_left;
-var random_y = pl_up;
-var canTrow = true;
-var canLoose = false;
+var canControl;
+var pointerWasDown;
+var firstPointerX;
+
+
+
+
+var counter;
+var random_x;
+var random_y;
+var canTrow;
+var canLoose;
 var loosing;
 var drugstweenX;
 var drugstweenY;
 var drugs;
 var net;
-var playerScore = 0;
-var enemyScore = 0;
-var needDrugsMoveUp = false;
+var playerScore;
+var enemyScore;
+var needDrugsMoveUp;
+
+var volley_msg;
+
 States.Volleyball = function (game) {
 
 
@@ -39,6 +47,29 @@ States.Volleyball.prototype = {
     },
 
     create: function () {
+        canControl = false;
+        pointerWasDown = false;
+        firstPointerX = 0;
+
+
+
+
+        counter = 0;
+        random_x = pl_left;
+        random_y = pl_up;
+        canTrow = true;
+        canLoose = false;
+
+        playerScore = 0;
+        enemyScore = 0;
+        needDrugsMoveUp = false;
+
+        volley_msg = null;
+
+
+
+
+
         group = game.add.group();
         group.create(0,0,'volley-back');
         //мент
@@ -86,7 +117,7 @@ States.Volleyball.prototype = {
         //group.sort('y', Phaser.Group.SORT_ASCENDING);
         
         //кнопка назад
-        this.add.button(40, 40, 'common-goback', function () {
+        this.add.button(0, 0, 'common-goback', function () {
             game.exitMiniGameSignal.dispatch();
         },this)
 
@@ -95,7 +126,13 @@ States.Volleyball.prototype = {
         playerScoreText = game.add.text(305,52,'0',{fontSize: '48px',fill: 'white'});
         enemyScoreText = game.add.text(412,52,'0',{fontSize: '48px',fill: 'white'});
         cursors = game.input.keyboard.createCursorKeys();
-        drugs.moveDown();   
+        drugs.moveDown();
+
+
+        volley_msg = new MessageBox(this);
+
+
+        volley_msg.show("game_intro",0);
     },
     
 
@@ -120,6 +157,11 @@ States.Volleyball.prototype = {
         //Передвижение мента
 
         
+    },
+
+
+    StartControl : function () {
+        canControl = true;
     }
 };
 function Jump(){
@@ -246,7 +288,7 @@ function throwBall(ball,x,y,PlayerThrow)
                     drugs.x = random_x;
                     drugs.y = random_y;
                     shadow.alpha = 0;
-                    if(enemyScore>=6){
+                    if(enemyScore>=winScore){
                         Loose();
                     }
             },this);
@@ -270,23 +312,31 @@ function throwBall(ball,x,y,PlayerThrow)
                 shadow.alpha = 0;
                 
             },this);
-            if(playerScore>=6){
+            if(playerScore>=winScore){
                 Win();
             }else{
                 game.time.events.add(Phaser.Timer.SECOND * 1.5, throwBack, this);
             }
     }
+
+
     function Win(){
-        console.log('Ты победил!');
+        //console.log('Ты победил!');
         canControl = false;
         canLoose =false;
         canTrow = false;
+
+
+        volley_msg.show("win",0);
     }
     function Loose(){
-        console.log('Ты проиграл!');
+        //console.log('Ты проиграл!');
         canControl = false;
         canLoose =false;
         canTrow = false;
+
+
+        volley_msg.show("loose",0);
     }
 }
 

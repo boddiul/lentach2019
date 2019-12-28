@@ -175,16 +175,34 @@ MessageBox = class {
                 Math.abs(this.global.game.input.y - HEIGHT / 2) < this.height[this.is_console ? 1 : 0] / 2;
 
 
-            console.log(clickedOnWindow)
 
 
-            if (!this.button.visible)
-                this.next();
+
 
 
             if (!clickedOnWindow)
             {
-                this.group.visible = false;
+
+
+                if (this.is_console || this.state==='help' || this.state==='win')
+                {
+
+                    this.next();
+                }
+                else
+                {
+                    this.group.visible = false;
+
+                    if (this.state==='loose')
+                    {
+                        game.exitMiniGameSignal.dispatch();
+                    }
+                }
+            }
+            else
+            {
+                if (!this.button.visible)
+                    this.next();
             }
         }
 
@@ -197,41 +215,74 @@ MessageBox = class {
 
         switch (this.state)
         {
+            case 'intro1':
+                this.group.visible = false;
+                break;
+
             case 'boost_cant':
 
-
+                this.group.visible = false;
                 break;
             case 'boost_can':
 
-                this.global.game_data.buyBooster(this.arg);
+                game_data.buyBooster(this.arg);
+                this.group.visible = false;
                 break;
             case 'boost_lvl':
 
                 openMiniGame(this.global.boosters[this.arg].lvl_id);
 
-                this.global.game_data.buyBooster(this.arg);
 
 
+                this.group.visible = false;
                 break;
 
             case 'lvl':
 
                 openMiniGame(this.global.boosters[this.arg].lvl_id);
-                this.global.game_data.score+=Math.round((this.global.boosters[this.arg].price+5000)/2);
-                this.global.game_data.saveData();
+
+                game_data.saveData();
+                this.group.visible = false;
                 break;
 
             case 'clear':
 
                 this.global.reset();
+
+                this.group.visible = false;
+                break;
+            case 'game_intro':
+                console.log(">>>>>");
+                this.show('help',this.arg);
+
+
+                break;
+
+            case 'help':
+
+
+
+                this.global.StartControl();
+                this.group.visible = false;
+                break;
+
+            case 'win':
+                game.exitMiniGameSignal.dispatch(this.arg);
+                break;
+
+
+            case 'loose':
+                if (this.arg===0)
+                    game.state.start('Volleyball');
                 break;
         }
-        this.group.visible = false;
+
     }
 
     show(state,arg) {
 
 
+        console.log(state);
         let txt = '...';
 
         let button_txt = 'OK';
@@ -293,6 +344,48 @@ MessageBox = class {
                 break;
 
 
+            case 'game_intro':
+
+
+                if (arg===0)
+                    txt = '7 июня полиция задержала корреспондента «Медузы» Ивана Голунова по подозрению «в попытке сбыта наркотиков». Дело получило большой резонанс из-за нарушений со стороны правоохранителей, а также из-за последовавших митингов в поддержку Ивана. \n' +
+                        '\n' +
+                        'Позже оказалось, что пакет с веществами подкинули и журналиста отпустили из-за отсутствия доказательств его вины.\n' +
+                        '\n' +
+                        'Это, конечно, возмутительно. Но вы сами попробуйте нормально подкинуть пакет.';
+
+                is_console = true;
+
+
+                break;
+
+            case 'help':
+
+                txt = 'Справка по уровню';
+                button_txt = 'Начать игру';
+                button_frame = 1;
+
+                break;
+
+            case 'loose':
+
+                txt = 'Проиграл';
+
+                button_txt = 'RESTART';
+
+                button_frame = 1;
+                break;
+
+            case 'win':
+
+                txt = 'Победа';
+
+                button_txt = 'CONTINUE';
+
+                button_frame = 1;
+
+                break;
+
         }
 
 
@@ -350,6 +443,72 @@ MessageBox = class {
 };
 
 
+LVL = [
+    {id:0,name:"Volleyball",price:100,ico:'vkid.exe',boost:1},
+    {id:1,name:"Pacman",price:500,ico:'meeting.exe',boost:2},
+    {id:2,name:"Zombies",price:1000,ico:'musor.exe',boost:5},
+    {id:3,name:"Burger",price:5000,ico:'burger.exe',boost:13},
+    {id:4,name:"Fire",price:10000,ico:'fire.exe',boost:47}];
+
+
+GameData = class {
+
+    constructor() {
+       // this.global=global;
+
+
+        if (localStorage.getItem("2420_first")== null)
+            localStorage.clear();
+
+        this.score = 0;
+        this.booster_num = [0,0,0,0,0];
+        this.first = 1;
+        if (localStorage.getItem("2420_score")!= null)
+        {
+            this.score = parseInt(localStorage.getItem("2420_score"));
+
+            for (let i=0;i<5;i++)
+                this.booster_num[i] = parseInt(localStorage.getItem("2420_booster"+i));
+
+            this.first = parseInt(localStorage.getItem("2420_first"));
+
+        }
+
+
+
+
+
+    }
+
+    saveData ()  {
+
+        localStorage.setItem("2420_score",this.score)
+        for (let i=0;i<5;i++)
+            localStorage.setItem("2420_booster"+i,this.booster_num[i]);
+
+        localStorage.setItem("2420_first",this.first);
+    }
+
+
+    buyBooster (id) {
+
+
+
+        this.score -= LVL[id].price;
+        this.booster_num[id]+=1;
+        this.saveData();
+    }
+
+
+};
+
+
+const game_data  = new GameData();
+
+
+
+
+
 game = new Phaser.Game(
     Game = {
         width: WIDTH,
@@ -373,13 +532,19 @@ States.Main = function(game) {
 };
 
 
+
+
 States.Main.prototype = {
 
 
     BoosterStageControl : class {
-        constructor(global,lvl_index,lvl_id,price,ico_txt,boost)
+        constructor(global,lvl_index/*,lvl_id,price,ico_txt,boost*/)
         {this.global=global;
 
+            let lvl_id = LVL[lvl_index].name;
+            let price = LVL[lvl_index].price;
+            let ico_txt = LVL[lvl_index].ico;
+            let boost = LVL[lvl_index].boost;
 
             this.lvl_index = lvl_index;
             this.lvl_id = lvl_id;
@@ -395,7 +560,7 @@ States.Main.prototype = {
                 if (!this.global.hud_busy())
                 {
 
-                    if (this.global.game_data.score>=this.price) {
+                    if (game_data.score>=this.price) {
 
                         this.global.message_box.show("boost_can",this.lvl_index);
 
@@ -453,9 +618,9 @@ States.Main.prototype = {
 
                 if (!this.global.hud_busy()) {
 
-                    if (this.global.game_data.score>=this.price) {
+                    if (game_data.score>=this.price) {
 
-                        if (this.global.game_data.booster_num[this.lvl_index] < 1)
+                        if (game_data.booster_num[this.lvl_index] < 1)
                             this.global.message_box.show("boost_lvl", this.lvl_index)
                         else
                         {
@@ -481,7 +646,7 @@ States.Main.prototype = {
             this.booster_label.anchor.setTo(0.5);﻿
 
 
-            if (this.global.game_data.booster_num[lvl_index]<1)
+            if (game_data.booster_num[lvl_index]<1)
                 this.level_button.visible = false;
             else
                 this.booster_lock.visible = false;
@@ -490,14 +655,14 @@ States.Main.prototype = {
 
         update() {
 
-            this.num = this.global.game_data.booster_num[this.lvl_index];
+            this.num = game_data.booster_num[this.lvl_index];
 
 
             let anim = this.booster_button.animations.getAnimation('run').isPlaying;
 
             if (this.num < 1)
             {
-                if (this.global.game_data.score>=this.price)
+                if (game_data.score>=this.price)
                 {
                     this.booster_lock.frame = 1;
                 }
@@ -666,7 +831,7 @@ States.Main.prototype = {
                 if (!this.global.hud_busy()) {
 
 
-                    this.global.game_data.score+=100;
+                    game_data.score+=100;
 
                     this.global.button_pepe.show();
 
@@ -687,61 +852,7 @@ States.Main.prototype = {
 
 
 
-    GameData : class {
 
-        constructor(global) {
-            this.global=global;
-
-
-            if (localStorage.getItem("2420_first")== null)
-                localStorage.clear();
-
-            console.log("!");
-
-            this.score = 0;
-            this.booster_num = [0,0,0,0,0];
-            this.first = 1;
-            if (localStorage.getItem("2420_score")!= null)
-            {
-                this.score = parseInt(localStorage.getItem("2420_score"));
-
-                for (let i=0;i<5;i++)
-                    this.booster_num[i] = parseInt(localStorage.getItem("2420_booster"+i));
-
-                this.first = parseInt(localStorage.getItem("2420_first"));
-
-            }
-
-
-
-
-
-        }
-
-        saveData ()  {
-
-            localStorage.setItem("2420_score",this.score)
-            for (let i=0;i<5;i++)
-                localStorage.setItem("2420_booster"+i,this.booster_num[i]);
-
-            localStorage.setItem("2420_first",this.first);
-        }
-
-
-        buyBooster (id) {
-
-
-
-            this.score -= this.global.boosters[id].price;
-            this.booster_num[id]+=1;
-            this.saveData();
-        }
-
-
-    },
-
-
-    game_data :null,
 
     menu_open_tween: null,
     background: null,
@@ -763,16 +874,16 @@ States.Main.prototype = {
     },
 
     reset : function(){
-        this.game_data.score = 0;
+        game_data.score = 0;
 
 
 
         for (let i=0;i<5;i++)
-            this.game_data.booster_num[i] = 0;
+            game_data.booster_num[i] = 0;
 
-        this.game_data.first = 1;
+        game_data.first = 1;
 
-        this.game_data.saveData();
+        game_data.saveData();
 
         this.game.state.start('Main');
 
@@ -799,8 +910,6 @@ States.Main.prototype = {
 
 
 
-            if (this.game_data === null)
-                this.game_data = new this.GameData(this);
 
 
         // this.game.load.onLoadStart.add(this.loadStart, this);
@@ -816,11 +925,11 @@ States.Main.prototype = {
 
 
         this.boosters = [
-            new this.BoosterStageControl(this,0,'Volleyball',100,'vkid.exe',1),
-            new this.BoosterStageControl(this,1,'Pacman',500,'meeting.exe',2),
-            new this.BoosterStageControl(this,2,'Zombies',1000,'musor.exe',5),
-            new this.BoosterStageControl(this,3,'Burger',5000,'burger.exe',13),
-            new this.BoosterStageControl(this,4,'Fire',10000,'fire.exe',47)];
+            new this.BoosterStageControl(this,0),
+            new this.BoosterStageControl(this,1),
+            new this.BoosterStageControl(this,2),
+            new this.BoosterStageControl(this,3),
+            new this.BoosterStageControl(this,4)];
 
 
 
@@ -872,10 +981,10 @@ States.Main.prototype = {
 
 
 
-        if (this.game_data.first>0)
+        if (game_data.first>0)
         {
             this.message_box.show('intro1');
-            this.game_data.first = 0;
+            game_data.first = 0;
         }
 
     },
@@ -890,7 +999,7 @@ States.Main.prototype = {
         if (this.save_time<0)
         {
             this.save_time = 5;
-            this.game_data.saveData();
+            game_data.saveData();
         }
 
         if (this.boost_time<0)
@@ -898,15 +1007,15 @@ States.Main.prototype = {
             let sum = 0;
 
             for (let i=0;i<5;i++)
-                sum+=this.game_data.booster_num[i]*this.boosters[i].boost;
+                sum+=game_data.booster_num[i]*this.boosters[i].boost;
 
-            this.game_data.score+=sum;
+            game_data.score+=sum;
             this.boost_time = 1;
         }
 
 
         
-        this.score_text.text = ''+this.game_data.score;
+        this.score_text.text = ''+game_data.score;
 
         for (let i=0;i<5;i++)
             this.boosters[i].update();
@@ -1015,7 +1124,27 @@ function openMiniGame(name)
     }
 }
 
-function onExitState() {
+function onExitState(win = -1) {
+
 
     game.state.start("Main", true);
+
+
+
+
+
+    if (win>=0)
+    {
+
+
+
+        if (game_data.booster_num[win]===0)
+            game_data.buyBooster(win);
+        else
+            game_data.score+=Math.round((LVL[win].price+5000)/2);
+
+    }
+
+    game_data.saveData();
+
 }
