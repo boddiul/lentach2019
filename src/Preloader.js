@@ -67,6 +67,7 @@ States.Preloader.prototype = {
 
         this.load.image('common-goback','assets/common/arrow.png');
         this.load.spritesheet('common-message','assets/common/message.png',280,380);
+        this.load.image('common-console','assets/common/console.png');
         this.load.spritesheet('common-button','assets/common/message_button.png',232,36);
 
         this.load.image('volley-back','assets/volley/back.png');

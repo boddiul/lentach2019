@@ -88,28 +88,38 @@ MessageBox = class {
         this.group.x = WIDTH/2; this.group.y = HEIGHT/2;
 
         this.back = this.global.game.add.sprite(0,0,'common-message');
-
         this.back.anchor.setTo(0.5, 0.5);
         this.back.scale.setTo(2,2);
 
+        this.back_console = this.global.game.add.sprite(0,0,'common-console');
+        this.back_console.anchor.setTo(0.5, 0.5);
+        this.back_console.scale.setTo(2,2);
 
-
-        this.width = 280*2;
-        this.height = 380*2;
+        this.width = [280*2,320*2];
+        this.height = [380*2,520*2];
 
 
         this.bottom = 100;
 
         this.label = this.global.game.add.text(0,0,'...',
-            {font: '22pt PIX',wordWrap:true,align: 'left', wordWrapWidth: this.width*0.88});
+            {font: '22pt PIX',wordWrap:true,align: 'left', wordWrapWidth: this.width[0]*0.88});
+
+        this.label_console = this.global.game.add.text(0,0,'...',
+            {font: '18pt PIX',wordWrap:true,align: 'left', wordWrapWidth: this.width[1]*0.88});
+
+        this.label_console.addColor('#ffffff',0);
+
         //this.label.padding.set(10, 10);
 
-        this.label.setTextBounds(0-this.width*0.44,0-this.height*0.5+this.bottom*0.75,this.width*2,this.height);
+        this.label.setTextBounds(0-this.width[0]*0.44,0-this.height[0]*0.5+this.bottom*0.75,this.width[0]*2,this.height[0]);
 
 
-        this.button = this.global.game.add.button(0,this.height*0.5 - this.bottom,'common-button',this.next,this);
+        this.label_console.setTextBounds(0-this.width[1]*0.44,0-this.height[1]*0.5+this.bottom*0.75,this.width[1]*2,this.height[1]);
 
-        this.button_label = this.global.game.add.text(0,this.height*0.5 - this.bottom,'...',{font: '22pt PIX'});
+
+        this.button = this.global.game.add.button(0,this.height[0]*0.5 - this.bottom,'common-button',this.next,this);
+
+        this.button_label = this.global.game.add.text(0,this.height[0]*0.5 - this.bottom,'...',{font: '22pt PIX'});
         this.button_label.anchor.setTo(0.5,0.5);﻿
 
 
@@ -118,7 +128,9 @@ MessageBox = class {
 
 
         this.group.add(this.back);
+        this.group.add(this.back_console);
         this.group.add(this.label);
+        this.group.add(this.label_console);
         this.group.add(this.button);
         this.group.add(this.button_label);
 
@@ -210,8 +222,22 @@ MessageBox = class {
         let button_frame = -1;
 
 
+        let is_console = false;
+
+
         switch (state)
         {
+
+            case 'intro1':
+
+                txt = 'Ура! С Новым Суверенным Интернетом! Все тесты прошли успешно и у тебя есть уникальнейшая возможность испробовать его первым! Правда, делать в нём пока особо нечего. Но есть одна лазейка, с помощь которой ты можешь сохранять мемы. Говорят, совсем скоро они станут настолько редкими, что превратятся в настоящую валюту.\n' +
+                    '\n' +
+                    'Скачай как можно больше мемасов, чтобы потом было с чего поорать.';
+
+                is_console = true;
+
+                break;
+
             case 'boost_cant':
 
                 txt = 'Буст: '+this.global.boosters[arg].boost+' мем/сек'+
@@ -259,23 +285,47 @@ MessageBox = class {
         this.group.visible = true;
 
 
-        this.label.text = txt;
-
-        if (button_frame<0)
+        if (is_console)
         {
+
+            this.back.visible = false;
+            this.label.visible = false;
             this.button.visible = false;
+
+            this.back_console.visible = true;
+            this.label_console.visible = true;
+
+            this.label_console.text = txt;
         }
         else
         {
+            this.back.visible = true;
+            this.label.visible = true;
             this.button.visible = true;
-            this.button.frame = button_frame;
-            this.button_label.text = button_txt;
+
+            this.back_console.visible = false;
+            this.label_console.visible = false;
+
+
+            this.label.text = txt;
+
+            if (button_frame<0)
+            {
+                this.button.visible = false;
+            }
+            else
+            {
+                this.button.visible = true;
+                this.button.frame = button_frame;
+                this.button_label.text = button_txt;
+            }
         }
+
+
 
         this.group.scale.setTo(0.8,0.8);
         let currentTween = this.global.game.add.tween(this.group.scale);
 
-        console.log("!!!");
         currentTween.to({ x:1,y:1 },200,Phaser.Easing.Quartic.Out);
         currentTween.start();
     }
@@ -324,15 +374,20 @@ States.Main.prototype = {
             this.booster_button = this.global.add.button(xx,700,'main-booster'+lvl_index, function () {
 
 
-                if (this.global.game_data.score>=this.price) {
-
-                    this.global.message_box.show("boost_can",this.lvl_index);
-
-                }
-                else
+                if (!this.global.hud_busy())
                 {
-                    this.global.message_box.show("boost_cant",this.lvl_index);
+
+                    if (this.global.game_data.score>=this.price) {
+
+                        this.global.message_box.show("boost_can",this.lvl_index);
+
+                    }
+                    else
+                    {
+                        this.global.message_box.show("boost_cant",this.lvl_index);
+                    }
                 }
+
 
             },this,0);
             this.booster_button.anchor.setTo(0.5,0.5);
@@ -619,18 +674,23 @@ States.Main.prototype = {
         constructor(global) {
             this.global=global;
 
-            //localStorage.clear();
+
+            if (localStorage.getItem("2420_first")== null)
+                localStorage.clear();
 
             console.log("!");
 
             this.score = 0;
             this.booster_num = [0,0,0,0,0];
+            this.first = 1;
             if (localStorage.getItem("2420_score")!= null)
             {
                 this.score = parseInt(localStorage.getItem("2420_score"));
 
                 for (let i=0;i<5;i++)
-                    this.booster_num[i] = parseInt(localStorage.getItem("2420_booster"+i))
+                    this.booster_num[i] = parseInt(localStorage.getItem("2420_booster"+i));
+
+                this.first = parseInt(localStorage.getItem("2420_first"));
 
             }
 
@@ -645,6 +705,8 @@ States.Main.prototype = {
             localStorage.setItem("2420_score",this.score)
             for (let i=0;i<5;i++)
                 localStorage.setItem("2420_booster"+i,this.booster_num[i]);
+
+            localStorage.setItem("2420_first",this.first);
         }
 
 
@@ -684,11 +746,15 @@ States.Main.prototype = {
 
     reset : function(){
         this.game_data.score = 0;
-        this.game_data.saveData();
+
 
 
         for (let i=0;i<5;i++)
             this.game_data.booster_num[i] = 0;
+
+        this.game_data.first = 1;
+
+        this.game_data.saveData();
 
         this.game.state.start('Main');
 
@@ -785,6 +851,15 @@ States.Main.prototype = {
 
         this.save_time = 5;
         this.boost_time = 1;
+
+
+
+        if (this.game_data.first>0)
+        {
+            this.message_box.show('intro1');
+            this.game_data.first = 0;
+        }
+
     },
 
     update: function () {
