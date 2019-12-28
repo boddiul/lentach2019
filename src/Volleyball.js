@@ -9,7 +9,7 @@ const enemy_down = 520;
 const enemy_left = 285;
 const enemy_right = 475;
 
-var winChance = 25;
+var winChance = 30;
 
 var canControl = true;
 var pointerWasDown = false;
@@ -27,6 +27,7 @@ var drugs;
 var net;
 var playerScore = 0;
 var enemyScore = 0;
+var needDrugsMoveUp = false;
 States.Volleyball = function (game) {
 
 
@@ -54,9 +55,6 @@ States.Volleyball.prototype = {
         ment.moveUp();
         net = group.create(0,455,'net');
         
-       
-
-        
         //Игрок
         player = group.create(pl_left,pl_up,'volley-player');
         player.pivot.x = player.width*2/3;
@@ -80,10 +78,6 @@ States.Volleyball.prototype = {
                 }
             }
         }
-        
-        
-        
-
         //'мяч' наркотики
         drugs = group.create(random_x,random_y,'drugs');
         drugs.pivot.x = 90;
@@ -97,11 +91,11 @@ States.Volleyball.prototype = {
         },this)
 
         //счёт
-        playerScoreText = game.add.text(300,16,'Мент:0',{fontSize: '32px',fill: 'white'});
-        enemyScoreText = game.add.text(500,16,'Голунов:0',{fontSize: '32px',fill: 'blue'});
+        group.create(180,0,'score');
+        playerScoreText = game.add.text(305,52,'0',{fontSize: '48px',fill: 'white'});
+        enemyScoreText = game.add.text(412,52,'0',{fontSize: '48px',fill: 'white'});
         cursors = game.input.keyboard.createCursorKeys();
-        drugs.moveDown();
-        drugs.moveDown();
+        drugs.moveDown();   
     },
     
 
@@ -158,53 +152,62 @@ function Shadow(){
     shadowAlphaTween =game.add.tween(shadow).to( { alpha: 1 }, 1200, "Linear", true); 
 }
 
-function throwBall(ball,x,y,GolunovThrow)
+function throwBall(ball,x,y,PlayerThrow)
 {
-    drugs.moveUp();
-    if(GolunovThrow){
+    
+    if(PlayerThrow){
         shadow.y = y+70;
+        drugstweenX = game.add.tween(ball).to( {x:x}, 1200, Phaser.Easing.Quadratic.Out, true)
+        drugstweenY = game.add.tween(ball).to( {y: y-200}, 500,Phaser.Easing.Quadratic.Out, true).onComplete.add(trajectory2,this);
     }else{
         shadow.y = y-30;
+        drugstweenX = game.add.tween(ball).to( {x:x}, 1200, Phaser.Easing.Quadratic.Out, true)
+        drugstweenY = game.add.tween(ball).to( {y: drugs.y-200}, 500,Phaser.Easing.Quadratic.Out, true).onComplete.add(trajectory2,this);
     }
     shadow.x = x-20;
     Shadow();
     canTrow = false;
-    drugstweenX = game.add.tween(ball).to( {x:x}, 1200, Phaser.Easing.Quadratic.Out, true)
-    //половина траэктории по Y
-    drugstweenY = game.add.tween(ball).to( {y: y-200}, 500,Phaser.Easing.Quadratic.Out, true).onComplete.add(trajectory2,this);
+    
     function trajectory2 () {
-        drugs.moveDown();
-        if(GolunovThrow){ 
-            //Бросок Голунова
+        if(PlayerThrow){ 
+            drugs.moveDown();
+            //Бросок Игрока
             var successThrow = game.rnd.integerInRange(1, 100);
             if(successThrow<winChance&&!(ment.x == x&&ment.y==y)){
-                //Удачный бросок, мент не успевает отбить
-                drugstweenY = game.add.tween(ball).to( {y: y+100}, 700,Phaser.Easing.Quadratic.Out, true).onComplete.add(WinOnePoint,this);
+                //Удачный бросок, враг не успевает отбить
+                if(ment.y>y){
+                    game.time.events.add(Phaser.Timer.SECOND * 0.5, 
+                        function(){
+                            drugs.moveDown();
+                            needDrugsMoveUp = true;
+                    },this);
+                }
+                drugstweenY = game.add.tween(ball).to( {y: y+100}, 700,Phaser.Easing.Quadratic.In, true).onComplete.add(WinOnePoint,this);
             }
             else{
-                //НЕ удачный бросок, мент отбивает
+                //НЕ удачный бросок, враг отбивает
                 if(!(ment.x == x&&ment.y==y)){
                     ment.x = x;
                     ment.y = y;
                 }
-                drugstweenY = game.add.tween(ball).to( {y: y+100}, 700,Phaser.Easing.Quadratic.Out, true).onComplete.add(throwBack,this);
+                drugstweenY = game.add.tween(ball).to( {y: y+100}, 700,Phaser.Easing.Quadratic.In, true).onComplete.add(throwBack,this);
             }
         }
         else{
-            //Бросок мента
+            drugs.moveUp();
+            //Бросок врага
             //Уже можно отбить
-
-            canTrow = true;
-            canLoose = true;
+            game.time.events.add(Phaser.Timer.SECOND * 0.45, 
+                function(){
+                    canLoose = true;
+                    canTrow = true;
+            },this);
             //вторая половина траектори по Y
-            
-            drugstweenY = game.add.tween(ball).to( {y: y}, 700,Phaser.Easing.Quadratic.Out, true).onComplete.add(LoseOnePoint,this)
-            
-            
+            drugstweenY = game.add.tween(ball).to( {y: y}, 700,Phaser.Easing.Quadratic.In, true).onComplete.add(LoseOnePoint,this)
         }
     }
     function throwBack(){
-        //Бросок ментов в случайную клетку Голунова
+        //Бросок врага в случайную клетку игрока
         ment.animations.play("jump"); 
         var a = game.rnd.integerInRange(0, 3);
         switch(a) {
@@ -232,7 +235,7 @@ function throwBall(ball,x,y,GolunovThrow)
             canLoose = false;
             canControl = false;
             enemyScore++;
-            enemyScoreText.setText('Голунов:'+enemyScore.toString(10));
+            enemyScoreText.setText(enemyScore.toString(10));
             game.time.events.add(Phaser.Timer.SECOND * 2, function(){canControl =true;} , this);
             game.time.events.add(Phaser.Timer.SECOND * 1, 
                 function(){
@@ -243,26 +246,47 @@ function throwBall(ball,x,y,GolunovThrow)
                     drugs.x = random_x;
                     drugs.y = random_y;
                     shadow.alpha = 0;
+                    if(enemyScore>=6){
+                        Loose();
+                    }
             },this);
         }
     }
-    
-    
     function WinOnePoint(){
         playerScore++;
-        playerScoreText.setText('Мент:'+playerScore.toString(10));
-        game.time.events.add(Phaser.Timer.SECOND * 1, 
+        playerScoreText.setText(playerScore.toString(10));
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, 
             function(){
+                if(needDrugsMoveUp){
+                    drugs.moveUp();
+                    needDrugsMoveUp = false;
+                }
                 ment.x = enemy_right;
                 ment.y = enemy_up;
                 random_x = enemy_right;
                 random_y = enemy_up;
                 drugs.x = enemy_right;
-                drugs.y = enemy_up;
+                drugs.y = enemy_up-100;
                 shadow.alpha = 0;
+                
             },this);
-        game.time.events.add(Phaser.Timer.SECOND * 2, throwBack, this);;
+            if(playerScore>=6){
+                Win();
+            }else{
+                game.time.events.add(Phaser.Timer.SECOND * 1.5, throwBack, this);
+            }
     }
-    
+    function Win(){
+        console.log('Ты победил!');
+        canControl = false;
+        canLoose =false;
+        canTrow = false;
+    }
+    function Loose(){
+        console.log('Ты проиграл!');
+        canControl = false;
+        canLoose =false;
+        canTrow = false;
+    }
 }
 
