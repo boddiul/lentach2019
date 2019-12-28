@@ -101,10 +101,10 @@ MessageBox = class {
         this.bottom = 100;
 
         this.label = this.global.game.add.text(0,0,'...',
-            {font: '22pt PIX',wordWrap:true,align: 'left', wordWrapWidth: this.width*0.9});
+            {font: '22pt PIX',wordWrap:true,align: 'left', wordWrapWidth: this.width*0.88});
         //this.label.padding.set(10, 10);
 
-        this.label.setTextBounds(0-this.width*0.45,0-this.height*0.5+this.bottom*0.75,this.width*2,this.height);
+        this.label.setTextBounds(0-this.width*0.44,0-this.height*0.5+this.bottom*0.75,this.width*2,this.height);
 
 
         this.button = this.global.game.add.button(0,this.height*0.5 - this.bottom,'common-button',this.next,this);
@@ -237,7 +237,7 @@ MessageBox = class {
                 break;
 
             case 'lvl':
-                txt = 'Пройди игру ещё раз и получите бонусную охапку мемов!'+
+                txt = 'Пройди игру ещё раз и получи бонусную охапку мемов!'+
                     '\nБонус: '+(Math.round((this.global.boosters[arg].price+5000)/2))+' мемов';
                 button_txt = 'Начать Игру';
                 button_frame = 1;
@@ -338,6 +338,9 @@ States.Main.prototype = {
             this.booster_button.anchor.setTo(0.5,0.5);
             this.booster_button.scale.setTo(2,2);
 
+            this.booster_button.animations.add('run',[0,1,2,3],5,true);
+
+
 
 
             /*let lx = 0; let ly = lvl_index<3 ? 0 :1;
@@ -417,6 +420,7 @@ States.Main.prototype = {
             this.num = this.global.game_data.booster_num[this.lvl_index];
 
 
+            let anim = this.booster_button.animations.getAnimation('run').isPlaying;
 
             if (this.num < 1)
             {
@@ -429,9 +433,20 @@ States.Main.prototype = {
                     this.booster_lock.frame = 0;
                 }
 
+                if (anim)
+                {
+                    this.booster_button.animations.stop('run',true);
+                }
+
             }
             else
             {
+
+                if (!anim)
+                {
+                    this.booster_button.animations.play('run');
+                }
+
                 this.booster_lock.visible = false;
                 this.level_button.visible = true;
                 this.level_label.visible = true;
@@ -717,8 +732,8 @@ States.Main.prototype = {
 
 
         this.boosters = [
-            new this.BoosterStageControl(this,0,'Volleyball',100,'podkid.exe',1),
-            new this.BoosterStageControl(this,1,'Pacman',500,'miting.exe',2),
+            new this.BoosterStageControl(this,0,'Volleyball',100,'vkid.exe',1),
+            new this.BoosterStageControl(this,1,'Pacman',500,'meeting.exe',2),
             new this.BoosterStageControl(this,2,'Zombies',1000,'musor.exe',5),
             new this.BoosterStageControl(this,3,'Burger',5000,'burger.exe',13),
             new this.BoosterStageControl(this,4,'Fire',10000,'fire.exe',47)];
