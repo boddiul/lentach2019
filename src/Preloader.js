@@ -92,6 +92,12 @@ States.Preloader.prototype = {
         this.load.image('pacman-small_circle','assets/pacman/circle_small.png');
 
         this.load.image('pvz-back','assets/pvz/back.png');
+        this.load.image('pvz-truck0','assets/pvz/truck0.png');
+        this.load.image('pvz-truck1','assets/pvz/truck1.png');
+        this.load.image('pvz-cat-back','assets/pvz/cata_back.png');
+        this.load.spritesheet('pvz-cat','assets/pvz/cata.png',69,203);
+        this.load.image('pvz-trash','assets/pvz/trash.png');
+
 
         this.load.image('burger-back','assets/burger/back.png');
         this.load.image('burger','assets/burger/burger.png');
