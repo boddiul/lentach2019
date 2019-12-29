@@ -298,7 +298,8 @@ States.Zombies.prototype = {
 
     create: function () {
 
-
+        music_main.stop();
+        music_pvz.play();
 
         this.hp = this.maxhp;
         this.spd = 3;

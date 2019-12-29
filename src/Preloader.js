@@ -45,6 +45,15 @@ States.Preloader.prototype = {
 
 
 
+
+        this.load.audioSprite('main-music','assets/main/maintheme.mp3');
+        this.load.audioSprite('volley-music','assets/volley/maintheme.mp3');
+        this.load.audioSprite('pacman-music','assets/pacman/maintheme.mp3');
+        this.load.audioSprite('pvz-music','assets/pvz/maintheme.mp3');
+        this.load.audioSprite('burger-music','assets/burger/maintheme.mp3');
+        this.load.audioSprite('fire-music','assets/fire/maintheme.mp3');
+
+
         this.load.image('main-button_clear','assets/main/button_clear.png');
         this.load.spritesheet('main-button_shop','assets/main/button_shop.png',32,32);
         this.load.spritesheet('main-button_sound','assets/main/button_sound.png',32,32);
@@ -73,7 +82,7 @@ States.Preloader.prototype = {
         this.load.audioSprite('volley-snus1','assets/volley/volley-snus1.mp3');
         this.load.audioSprite('volley-snus2','assets/volley/volley-snus2.mp3');
         this.load.audioSprite('volley-snus3','assets/volley/volley-snus3.mp3');
-        this.load.audioSprite('volley-maintheme','assets/volley/volley-maintheme.mp3');
+
         this.load.audioSprite('volley-losing','assets/volley/volley-losing.mp3');
         this.load.audioSprite('volley-win','assets/volley/volley-win.mp3');
         this.load.image('volley-back','assets/volley/back.png');
@@ -111,7 +120,7 @@ States.Preloader.prototype = {
 
         this.load.audioSprite('burger-food1','assets/burger/burger-food1.mp3');
         this.load.audioSprite('burger-food2','assets/burger/burger-food2.mp3');
-        this.load.audioSprite('burger-maintheme','assets/burger/burger-maintheme.mp3');
+
         this.load.audioSprite('burger-shit','assets/burger/burger-shit.mp3');
         this.load.image('burger-back','assets/burger/back.png');
         this.load.image('burger','assets/burger/burger.png');

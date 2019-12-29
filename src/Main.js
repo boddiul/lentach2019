@@ -458,6 +458,23 @@ LVL = [
     {id:4,name:"Fire",price:10000,ico:'fire.exe',boost:47}];
 
 
+let sound_on = true;
+
+let music_main = null;
+let music_volley = null;
+let music_pacman = null;
+let music_pvz = null;
+let music_burger = null;
+let music_fire = null;
+
+
+let screen_clicked = false;
+function screen_click() {
+    screen_clicked = true;
+}
+
+document.addEventListener("click", screen_click);
+
 GameData = class {
 
     constructor() {
@@ -916,7 +933,15 @@ States.Main.prototype = {
 
 
 
-
+            if (music_main===null)
+            {
+                music_main = game.add.audio('main-music',1,true);
+                music_volley = game.add.audio('volley-music',1,true);
+                music_pacman = game.add.audio('pacman-music',1,true);
+                music_pvz = game.add.audio('pvz-music',1,true);
+                music_burger = game.add.audio('burger-music',1,true);
+                music_fire = game.add.audio('fire-music',1,true);
+            }
 
 
 
@@ -996,6 +1021,15 @@ States.Main.prototype = {
             game_data.first = 0;
         }
 
+
+
+        music_volley.stop();
+        music_pacman.stop();
+        music_pvz.stop();
+        music_burger.stop();
+        music_fire.stop();
+
+
     },
 
     update: function () {
@@ -1030,6 +1064,10 @@ States.Main.prototype = {
             this.boosters[i].update();
 
         this.button_pepe.update();
+
+        if (screen_clicked && !music_main.isPlaying)
+            music_main.play();
+
     }
 
 
@@ -1070,7 +1108,9 @@ function loadScript(url, callback)
 
 function openMiniGame(name)
 {
-    //mainSoundtrack.stop();
+
+    music_main.stop();
+
 
     switch (name) {
         case "Volleyball":

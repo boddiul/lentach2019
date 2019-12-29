@@ -232,6 +232,11 @@ States.Fire.prototype = {
     },
 
     create: function () {
+
+
+        music_main.stop();
+        music_fire.play();
+
         this.game.add.sprite(0,0,'fire-back');
 
 

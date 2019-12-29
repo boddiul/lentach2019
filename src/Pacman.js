@@ -389,6 +389,9 @@ States.Pacman.prototype = {
 
     create: function () {
 
+        music_main.stop();
+        music_pacman.play();
+
         this.game.add.sprite(0,0,'pacman-back');
 
 

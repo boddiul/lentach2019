@@ -17,7 +17,6 @@ var holesCount = 0;
 var food1;
 var food2;
 var shit;
-var maintheme;
 States.Burger = function (game) {
 
 };
@@ -26,21 +25,22 @@ States.Burger.prototype = {
     preload : function() {},
 
     create: function () {
+
+        music_main.stop();
+        music_burger.play();
+
         game.time.events.resume();
-        maintheme = game.add.audio('burger-maintheme');
+
         food1 = game.add.audio('burger-food1');
         food2 = game.add.audio('burger-food2');
         shit = game.add.audio('burger-shit');
         food1.loop = false;
         food2.loop = false;
         shit.loop = false;
-        maintheme.play();
-        maintheme.loop = true;
-        maintheme.volume = 0.5;
         score = 0;
         this.game.add.sprite(0,0,'burger-back');
         this.add.button(40, 40, 'common-goback', function () {
-            maintheme.stop();
+
             game.exitMiniGameSignal.dispatch();
         },this)
         Text = game.add.text(230,70,'Время пиара:60',{fontSize: '36px',fill: 'white'});
@@ -165,11 +165,9 @@ function UpdateMood(){
     ,this);
 }
 function Win(){
-    maintheme.stop();
     game.time.events.pause();
 }
 function Loose(){
-    maintheme.stop();
     game.time.events.pause();
 }
 function ClickNice(peekHole){

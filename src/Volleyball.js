@@ -55,10 +55,9 @@ States.Volleyball.prototype = {
     },
 
     create: function () {
-        maintheme = game.add.audio('volley-maintheme');
-        maintheme.loop = true;
-        maintheme.volume = 1;
-        maintheme.play();
+
+        music_main.stop();
+        music_volley.play();
         wining = game.add.audio('volley-win');
         wining.loop = false;
         losing = game.add.audio('volley-losing');
@@ -138,7 +137,7 @@ States.Volleyball.prototype = {
         
         //кнопка назад
         this.add.button(0, 0, 'common-goback', function () {
-            maintheme.stop();
+
             game.exitMiniGameSignal.dispatch();
         },this)
 
