@@ -134,6 +134,8 @@ States.Preloader.prototype = {
         this.load.image('burger-ebalo3','assets/burger/ebalo3.png');
         this.load.image('burger-statusBG','assets/burger/statusBG.png');
         this.load.image('burger-status','assets/burger/status.png');
+        this.load.image('burger-status-red','assets/burger/status_red.png');
+
 
         this.load.image('fire-back','assets/fire/back.png');
         this.load.image('fire-fog','assets/fire/fog.png');

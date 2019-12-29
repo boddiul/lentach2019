@@ -9,8 +9,8 @@ States.Zombies.prototype = {
 
 
 
-    total_time : 40,
-    maxhp : 20,
+    total_time : 50,
+    maxhp : 30,
 
     Ball:class {
 
@@ -504,7 +504,7 @@ States.Zombies.prototype = {
 
         if (this.timer>0)
         {
-            if (Math.random()<0.01 && total <1+(1-this.timer/this.total_time)*5)
+            if (Math.random()<0.02 && total <1+(1-this.timer/this.total_time)*6)
             {
 
                 let c = -1;

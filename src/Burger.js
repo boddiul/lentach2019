@@ -1,22 +1,26 @@
 States = {};
-var speed = 150;
+var speed = 200;
 var minDuration = 0.3;
 var maxDuration = 0.8;
 var minColdown = 0.3;
 var maxColdown = 1.5;
 var PoopChance = 50;
 
-var GameTime = 60;
-
+var GameTime = -1;
+var TotalTime = 40;
 var Text;
 var ebalo;
 var statusBar;
 var statusBarBG;
-var mood = 50;
+var mood = -1;
 var holesCount = 0;
 var food1;
 var food2;
 var shit;
+
+
+var burger_msg;
+
 States.Burger = function (game) {
 
 };
@@ -26,10 +30,14 @@ States.Burger.prototype = {
 
     create: function () {
 
+
+        GameTime = TotalTime;
+        mood = 50;
+
         music_main.stop();
         music_burger.play();
 
-        game.time.events.resume();
+
 
         food1 = game.add.audio('burger-food1');
         food2 = game.add.audio('burger-food2');
@@ -42,13 +50,19 @@ States.Burger.prototype = {
         this.add.button(40, 40, 'common-goback', function () {
 
             game.exitMiniGameSignal.dispatch();
-        },this)
-        Text = game.add.text(230,70,'Время пиара:60',{fontSize: '36px',fill: 'white'});
-        ebalo = this.game.add.sprite(550,1065,'burger-ebalo2').moveUp();
+        },this);
+
+        Text = game.add.text(230,70,'Время пиара:'+TotalTime,{fontSize: '36px',fill: 'white'});
+        ebalo = this.game.add.sprite(640,1155,'burger-ebalo2').moveUp();
+        ebalo.scale.setTo(1.5);
+        ebalo.anchor.setTo(0.5);
         statusBarBG = this.game.add.sprite(50,1125,'burger-statusBG');
         statusBarBG.width = 450;
+        statusBar_red = this.game.add.sprite(50,1125,'burger-status-red');
         statusBar = this.game.add.sprite(50,1125,'burger-status');
-        UpdateMood();
+
+
+
         
         peekHoles = [
                     new PeekHole(480,300),
@@ -60,8 +74,24 @@ States.Burger.prototype = {
                     new PeekHole(90,750),
                     new PeekHole(430,785),
                     ];
+
+
+
+        burger_msg = new MessageBox(this);
+
+        burger_msg.show("game_intro",3);
     },
     update: function () {}
+
+
+    ,
+
+
+    StartControl : function () {
+        game.time.events.resume();
+
+        UpdateMood();
+    }
 };
 
 function Hide(peekHole){
@@ -136,6 +166,33 @@ function UpdateMood(){
     game.time.events.add(Phaser.Timer.SECOND * 0.1, 
         function(){
             
+
+            Text.text = 'Время пиара: '+Math.round(GameTime).toString(10);
+
+            statusBar.width = 450*mood/100;
+            statusBar_red.width = 450*mood/100;
+
+            if (mood<50)
+            {
+                statusBar.visible = false;
+                statusBar_red.visible = true;
+            }
+            else
+            {
+                statusBar.visible = true;
+                statusBar_red.visible = false;
+            }
+
+
+            if(mood <= 30){
+                ebalo.loadTexture('burger-ebalo1');
+            }else if (mood >= 50){
+                ebalo.loadTexture('burger-ebalo3');
+            }else{
+                ebalo.loadTexture('burger-ebalo2');
+            }
+
+
             if(mood>100){
                 mood=100;
             }else if(mood < 1){
@@ -151,24 +208,22 @@ function UpdateMood(){
                     Loose();
                 }
             }
-            Text.text = 'Время пиара: '+Math.round(GameTime).toString(10);
-            statusBar.width = 450*mood/100;
-            if(mood <= 30){
-                ebalo.loadTexture('burger-ebalo1');
-            }else if (mood >= 70){
-                ebalo.loadTexture('burger-ebalo3');
-            }else{
-                ebalo.loadTexture('burger-ebalo2');
-            }
             UpdateMood();
             }
     ,this);
 }
 function Win(){
     game.time.events.pause();
+
+
+
+    burger_msg.show("win",3);
 }
 function Loose(){
     game.time.events.pause();
+
+
+    burger_msg.show("loose",3);
 }
 function ClickNice(peekHole){
     if(peekHole.canClick){
@@ -183,7 +238,7 @@ function ClickNice(peekHole){
                 peekHole.clap.alpha = 0;
             },this);
         Hide(peekHole);
-        mood +=2;
+        mood +=2.5;
     }
 }
 function ClickFail(peekHole){

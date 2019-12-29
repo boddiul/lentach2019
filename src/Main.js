@@ -361,8 +361,18 @@ MessageBox = class {
 
                 if (arg===2)
                     txt = 'текст про Шуес';
-                is_console = true;
 
+
+                if (arg===3)
+                    txt = 'текст про Бургеры';
+
+
+                if (arg===4)
+                    txt = 'текст про пожары';
+
+
+
+                is_console = true;
 
                 break;
 
