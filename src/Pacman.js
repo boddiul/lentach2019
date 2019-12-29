@@ -392,7 +392,7 @@ States.Pacman.prototype = {
         music_main.stop();
         music_pacman.play();
 
-        this.game.add.sprite(0,0,'pacman-back');
+        this.back = this.game.add.sprite(0,0,'pacman-back');
 
 
         let star_x = 30;
@@ -511,11 +511,14 @@ States.Pacman.prototype = {
                     this.enemy[i].sprite.x,this.enemy[i].sprite.y);
 
 
+
+
+
                 if (d<this.blockSize*0.6)
                 {
                     this.player.hit = 1;
 
-
+                    game.camera.shake(0.03, 300,true,Phaser.Camera.SHAKE_HORIZONTAL);
                     this.stars[this.hp-1].visible = false;
                     this.hp-=1;
 
