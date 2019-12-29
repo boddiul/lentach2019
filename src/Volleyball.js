@@ -28,6 +28,11 @@ var net;
 var playerScore = 0;
 var enemyScore = 0;
 var needDrugsMoveUp = false;
+
+var losing;
+var maintheme;
+var snus = [];
+var wining;
 States.Volleyball = function (game) {
 
 
@@ -39,6 +44,19 @@ States.Volleyball.prototype = {
     },
 
     create: function () {
+        maintheme = game.add.audio('volley-maintheme');
+        maintheme.loop = true;
+        maintheme.volume = 1;
+        maintheme.play();
+        wining = game.add.audio('volley-win');
+        wining.loop = false;
+        losing = game.add.audio('volley-losing');
+        losing.loop = false;
+        for(let i=1;i<4;i++){
+            snus[i] = game.add.audio('volley-snus'+i.toString(10));
+            snus[i].loop = false;
+        }
+
         group = game.add.group();
         group.create(0,0,'volley-back');
         //мент
@@ -154,7 +172,7 @@ function Shadow(){
 
 function throwBall(ball,x,y,PlayerThrow)
 {
-    
+    snus[game.rnd.integerInRange(1, 3)].play();
     if(PlayerThrow){
         shadow.y = y+70;
         drugstweenX = game.add.tween(ball).to( {x:x}, 1200, Phaser.Easing.Quadratic.Out, true)
@@ -236,6 +254,7 @@ function throwBall(ball,x,y,PlayerThrow)
             canControl = false;
             enemyScore++;
             enemyScoreText.setText(enemyScore.toString(10));
+            losing.play();
             game.time.events.add(Phaser.Timer.SECOND * 2, function(){canControl =true;} , this);
             game.time.events.add(Phaser.Timer.SECOND * 1, 
                 function(){
@@ -255,6 +274,7 @@ function throwBall(ball,x,y,PlayerThrow)
     function WinOnePoint(){
         playerScore++;
         playerScoreText.setText(playerScore.toString(10));
+        wining.play();
         game.time.events.add(Phaser.Timer.SECOND * 0.8, 
             function(){
                 if(needDrugsMoveUp){

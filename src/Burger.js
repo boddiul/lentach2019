@@ -1,14 +1,23 @@
 States = {};
-var speed = 300;
-var minDuration = 0.65;
-var maxDuration = 2;
-var minColdown = 1;
-var maxColdown = 7;
+var speed = 150;
+var minDuration = 0.3;
+var maxDuration = 0.8;
+var minColdown = 0.3;
+var maxColdown = 1.5;
 var PoopChance = 50;
 
+var GameTime = 60;
+
 var Text;
-var score = 0;
+var ebalo;
+var statusBar;
+var statusBarBG;
+var mood = 50;
 var holesCount = 0;
+var food1;
+var food2;
+var shit;
+var maintheme;
 States.Burger = function (game) {
 
 };
@@ -17,12 +26,29 @@ States.Burger.prototype = {
     preload : function() {},
 
     create: function () {
+        game.time.events.resume();
+        maintheme = game.add.audio('burger-maintheme');
+        food1 = game.add.audio('burger-food1');
+        food2 = game.add.audio('burger-food2');
+        shit = game.add.audio('burger-shit');
+        food1.loop = false;
+        food2.loop = false;
+        shit.loop = false;
+        maintheme.play();
+        maintheme.loop = true;
+        maintheme.volume = 0.5;
         score = 0;
         this.game.add.sprite(0,0,'burger-back');
         this.add.button(40, 40, 'common-goback', function () {
             game.exitMiniGameSignal.dispatch();
         },this)
-        Text = game.add.text(230,70,'Здоровье Собянина:0',{fontSize: '36px',fill: 'white'});
+        Text = game.add.text(230,70,'Время пиара:60',{fontSize: '36px',fill: 'white'});
+        ebalo = this.game.add.sprite(550,1065,'burger-ebalo2').moveUp();
+        statusBarBG = this.game.add.sprite(50,1125,'burger-statusBG');
+        statusBarBG.width = 450;
+        statusBar = this.game.add.sprite(50,1125,'burger-status');
+        UpdateMood();
+        
         peekHoles = [
                     new PeekHole(480,300),
                     new PeekHole(120,350),
@@ -86,6 +112,8 @@ PeekHole = function(x,y){
     this.flag = game.add.sprite(x-50,y-100,'burger-flag');
     this.hole = game.add.sprite(x-30,y,'burger-hole');
     this.front = game.add.sprite(x-30,y,'burger-front');
+    this.clap = game.add.sprite(x+40,y-80,'burger-clap');
+    this.clap.alpha = 0;
     this.hole.moveDown();
     this.hole.moveDown();    
     this.id = ++holesCount;
@@ -103,23 +131,71 @@ PeekHole = function(x,y){
     Hide(this);
     
 }
+function UpdateMood(){
+    game.time.events.add(Phaser.Timer.SECOND * 0.1, 
+        function(){
+            
+            if(mood>100){
+                mood=100;
+            }else if(mood < 1){
+                mood = 0;
+            }else{
+                mood -= 0.1;
+            }
+            GameTime -=0.1;
+            if(GameTime <=0){
+                if(mood >= 50){
+                    Win();
+                }else{
+                    Loose();
+                }
+            }
+            Text.text = 'Время пиара: '+Math.round(GameTime).toString(10);
+            statusBar.width = 450*mood/100;
+            if(mood <= 30){
+                ebalo.loadTexture('burger-ebalo1');
+            }else if (mood >= 70){
+                ebalo.loadTexture('burger-ebalo3');
+            }else{
+                ebalo.loadTexture('burger-ebalo2');
+            }
+            UpdateMood();
+            }
+    ,this);
+}
+function Win(){
+    maintheme.stop();
+    game.time.events.pause();
+}
+function Loose(){
+    maintheme.stop();
+    game.time.events.pause();
+}
 function ClickNice(peekHole){
     if(peekHole.canClick){
-        AddScore();
+        if(game.rnd.integerInRange(1,100)<50){
+            food1.play();
+        }else{
+            food2.play();
+        }
+        peekHole.clap.alpha = 1;
+        game.time.events.add(Phaser.Timer.SECOND * 0.2, 
+            function(){
+                peekHole.clap.alpha = 0;
+            },this);
         Hide(peekHole);
+        mood +=2;
     }
 }
 function ClickFail(peekHole){
     if(peekHole.canClick){
-        DecScore();
+        shit.play();
+        peekHole.clap.alpha = 1;
+        game.time.events.add(Phaser.Timer.SECOND * 0.2, 
+            function(){
+                peekHole.clap.alpha = 0;
+            },this);
         Hide(peekHole);
+        mood -=4;
     }
-}
-function AddScore(){
-    score+=100;
-    Text.setText("Здоровье Собянина:"+score.toString(10));
-}
-function DecScore(){
-    score-=200;
-    Text.setText("Здоровье Собянина:"+score.toString(10));
 }

@@ -70,6 +70,12 @@ States.Preloader.prototype = {
         this.load.image('common-console','assets/common/console.png');
         this.load.spritesheet('common-button','assets/common/message_button.png',232,36);
 
+        this.load.audioSprite('volley-snus1','assets/volley/volley-snus1.mp3');
+        this.load.audioSprite('volley-snus2','assets/volley/volley-snus2.mp3');
+        this.load.audioSprite('volley-snus3','assets/volley/volley-snus3.mp3');
+        this.load.audioSprite('volley-maintheme','assets/volley/volley-maintheme.mp3');
+        this.load.audioSprite('volley-losing','assets/volley/volley-losing.mp3');
+        this.load.audioSprite('volley-win','assets/volley/volley-win.mp3');
         this.load.image('volley-back','assets/volley/back.png');
         this.load.image('volley-left_down_btn','assets/volley/left_down_btn.png');
         this.load.image('volley-left_up_btn','assets/volley/left_up_btn.png');
@@ -99,13 +105,22 @@ States.Preloader.prototype = {
         this.load.spritesheet('pvz-cat','assets/pvz/cata.png',69,203);
         this.load.image('pvz-trash','assets/pvz/trash.png');
 
-
+        this.load.audioSprite('burger-food1','assets/burger/burger-food1.mp3');
+        this.load.audioSprite('burger-food2','assets/burger/burger-food2.mp3');
+        this.load.audioSprite('burger-maintheme','assets/burger/burger-maintheme.mp3');
+        this.load.audioSprite('burger-shit','assets/burger/burger-shit.mp3');
         this.load.image('burger-back','assets/burger/back.png');
         this.load.image('burger','assets/burger/burger.png');
         this.load.image('burger-hole','assets/burger/hole.png');
         this.load.image('burger-front','assets/burger/front.png');
         this.load.image('burger-flag','assets/burger/flag.png');
         this.load.image('burger-poop','assets/burger/poop.png');
+        this.load.image('burger-clap','assets/burger/clap.png');
+        this.load.image('burger-ebalo1','assets/burger/ebalo1.png');
+        this.load.image('burger-ebalo2','assets/burger/ebalo2.png');
+        this.load.image('burger-ebalo3','assets/burger/ebalo3.png');
+        this.load.image('burger-statusBG','assets/burger/statusBG.png');
+        this.load.image('burger-status','assets/burger/status.png');
 
         this.load.image('fire-back','assets/fire/back.png');
         this.load.image('fire-fog','assets/fire/fog.png');
