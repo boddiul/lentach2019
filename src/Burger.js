@@ -40,6 +40,7 @@ States.Burger.prototype = {
         score = 0;
         this.game.add.sprite(0,0,'burger-back');
         this.add.button(40, 40, 'common-goback', function () {
+            maintheme.stop();
             game.exitMiniGameSignal.dispatch();
         },this)
         Text = game.add.text(230,70,'Время пиара:60',{fontSize: '36px',fill: 'white'});

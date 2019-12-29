@@ -138,6 +138,7 @@ States.Volleyball.prototype = {
         
         //кнопка назад
         this.add.button(0, 0, 'common-goback', function () {
+            maintheme.stop();
             game.exitMiniGameSignal.dispatch();
         },this)
 
