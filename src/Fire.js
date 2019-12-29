@@ -14,6 +14,8 @@ States.Fire.prototype = {
     trees : [],
     tree_h : 5,
     full_h : 700,
+    total_time : 30,
+    change_time : 3,
 
 
 
@@ -21,6 +23,9 @@ States.Fire.prototype = {
         constructor(global,id) {
             this.global = global;
 
+
+
+            this.active = false;
 
             this.id = id;
 
@@ -57,11 +62,17 @@ States.Fire.prototype = {
 
 
 
-            if (this.progress<1)
-                this.progress+=Math.random()*0.002;
+
+
+            if (this.global.timer>0 && this.global.canControl)
+            {
+                if (this.progress<1)
+                    this.progress+=(this.active ? 2 : 1)*Math.random()*0.002 ;
+            }
+
 
             if (this.global.heli[this.id].active && this.global.heli[this.id].fell)
-                this.progress-=0.002;
+                this.progress-=0.004;
 
             if (this.progress>1)
                 this.progress = 1;
@@ -180,6 +191,9 @@ States.Fire.prototype = {
             {
                 xx = this.cx+Math.cos(this.a)*10;
                 yy = this.cy + 70 + Math.sin(this.a)*10;
+
+
+                this.global.money-=0.0015;
             }
             else
             {
@@ -225,9 +239,16 @@ States.Fire.prototype = {
 
     onDown: function() {
 
-        let i = this.game.input.x < WIDTH/3 ? 0 : this.game.input.x<WIDTH*2/3 ? 1: 2;
 
-        this.heli[i].changeState();
+        if (this.canControl)
+        {
+
+            let i = this.game.input.x < WIDTH/3 ? 0 : this.game.input.x<WIDTH*2/3 ? 1: 2;
+
+            if ((!this.heli[i].active && this.money>0.2) ||this.heli[i].active)
+                this.heli[i].changeState();
+
+        }
 
     },
 
@@ -235,7 +256,7 @@ States.Fire.prototype = {
 
 
         music_main.stop();
-        music_fire.play();
+        //music_fire.play();
 
         this.game.add.sprite(0,0,'fire-back');
 
@@ -275,9 +296,87 @@ States.Fire.prototype = {
         },this);
 
         this.game.input.onDown.add(this.onDown,this);
+
+
+        this.bar_bg = this.game.add.sprite(WIDTH/2,90,'fire-bar-bg');
+        this.bar_bg.anchor.setTo(0.5);
+        this.bar = this.game.add.sprite(265,75,'fire-bar');
+
+        this.bar.width = 260;
+
+        this.message_box = new MessageBox(this);
+
+        this.message_box.show("game_intro",4)
+
+
+        this.canControl = false;
+        this.endGame = false;
+
+        this.timer = this.total_time;
+        this.change_timer = this.change_time;
+
+        this.money = 1;
+
     },
 
+    StartControl : function()
+    {
+        this.canControl = true;
+    },
+
+    Loose : function()
+    {
+        this.endGame = true;
+        this.message_box.show("loose",4);
+    },
+
+    Win : function ()
+    {
+        this.endGame = true;
+        this.message_box.show("win",4);
+    },
+
+
     update: function () {
+
+
+
+
+
+
+        if (this.canControl && !this.endGame)
+        {
+
+            if (this.money<1)
+                this.money+=0.002;
+
+
+            if (this.money<0.15)
+            {
+                for (let i=0;i<3;i++)
+                    if (this.heli[i].active)
+                    {
+                        this.heli[i].changeState();
+                    }
+            }
+
+            this.timer -= 1/60;
+            this.change_timer -= 1/60;
+
+            if (this.change_timer <=0)
+            {
+
+                for (let i=0;i<3;i++)
+                    this.fire[i].active = false;
+
+                this.fire[Math.floor(Math.random()*3)].active = true;
+                this.fire[Math.floor(Math.random()*3)].active = true;
+
+                this.change_timer = this.change_time;
+
+            }
+        }
+
 
         for (let i=0;i<3;i++)
         {
@@ -286,6 +385,9 @@ States.Fire.prototype = {
         }
 
         this.fog.alpha = Math.max(this.fire[0].progress,this.fire[1].progress,this.fire[2].progress);
+
+
+        let left_trees = 0;
 
         for (let i=0;i<3;i++)
             for (let j=0;j<this.tree_h;j++)
@@ -299,11 +401,33 @@ States.Fire.prototype = {
                     if (this.trees[i][j].frame===2)
                         this.trees[i][j].frame = 3;
 
+
+
                 }
+
+                if (this.trees[i][j].frame===0 || this.trees[i][j].frame===2)
+                    left_trees+=1;
             }
 
 
+        if (left_trees<1 && !this.endGame)
+        {
+            this.Loose();
+        }
 
+
+        if (!this.endGame && this.timer<0)
+        {
+            if (this.fire[0].progress<0.1 && this.fire[1].progress<0.1 && this.fire[2].progress<0.1)
+            {
+                this.Win();
+            }
+        }
+
+
+
+
+        this.bar.width = 260*this.money;
     }
 
 

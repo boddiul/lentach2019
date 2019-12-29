@@ -144,6 +144,9 @@ States.Preloader.prototype = {
         this.load.spritesheet('fire-heli','assets/fire/heli.png',192,192);
         this.load.image('fire-water','assets/fire/water.png');
 
+        this.load.image('fire-bar','assets/fire/bar.png');
+        this.load.image('fire-bar-bg','assets/fire/bar_bg.png');
+
     },
 
     fileComplete: function(progress, cacheKey, success, totalLoaded, totalFiles) {
