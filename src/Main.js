@@ -120,7 +120,10 @@ MessageBox = class {
         this.label_console.setTextBounds(0-this.width[1]*0.44,0-this.height[1]*0.5+this.bottom*0.75,this.width[1]*2,this.height[1]);
 
 
-        this.button = this.global.game.add.button(0,this.height[0]*0.5 - this.bottom,'common-button',this.next,this);
+        this.button = this.global.game.add.button(0,this.height[0]*0.5 - this.bottom,'common-button',function (){
+            this.next();
+            this.onUp();
+        }.bind(this),this);
 
         this.button_label = this.global.game.add.text(0,this.height[0]*0.5 - this.bottom,'...',{font: '22pt PIX'});
         this.button_label.anchor.setTo(0.5,0.5);﻿
@@ -153,7 +156,7 @@ MessageBox = class {
 
         this.global.game.input.onDown.add(this.onClick,this);
 
-        this.global.game.input.onUp.add(this.onUp,this);
+       this.global.game.input.onUp.add(this.onUp,this);
     }
 
     onUp() {
@@ -356,6 +359,8 @@ MessageBox = class {
                 if (arg===1)
                     txt = 'текст про пакмана';
 
+                if (arg===2)
+                    txt = 'текст про Шуес';
                 is_console = true;
 
 
@@ -872,6 +877,8 @@ States.Main.prototype = {
     message_box : null,
 
     hud_busy : function() {
+        //return this.message_box.group.visible;///this.message_box.opened>0;
+
         return this.message_box.opened>0;
     },
 
