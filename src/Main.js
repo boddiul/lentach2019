@@ -403,7 +403,7 @@ MessageBox = class {
 
             case 'lvl':
                 txt = 'Пройди игру ещё раз и получи бонусную охапку мемов!'+
-                    '\nБонус: '+(Math.round((this.global.boosters[arg].price+5000)/2))+' мемов';
+                    '\nБонус: '+(Math.round((this.global.boosters[arg].price+2500)/2))+' мемов';
                 button_txt = 'Начать Игру';
                 button_frame = 1;
                 break;
@@ -596,11 +596,11 @@ if (sound_on)
 
 
 LVL = [
-    {id:0,name:"Volleyball",price:100,ico:'vkid.exe',boost:1},
-    {id:1,name:"Pacman",price:500,ico:'meeting.exe',boost:2},
-    {id:2,name:"Zombies",price:1000,ico:'musor.exe',boost:5},
-    {id:3,name:"Burger",price:5000,ico:'burger.exe',boost:13},
-    {id:4,name:"Fire",price:10000,ico:'fire.exe',boost:47}];
+    {id:0,name:"Volleyball",price:50,ico:'vkid.exe',boost:1},
+    {id:1,name:"Pacman",price:250,ico:'meeting.exe',boost:2},
+    {id:2,name:"Zombies",price:500,ico:'musor.exe',boost:5},
+    {id:3,name:"Burger",price:2500,ico:'burger.exe',boost:13},
+    {id:4,name:"Fire",price:5000,ico:'fire.exe',boost:47}];
 
 BUT = [
     {id:0,name:"clicker",unlock:0,frames:2},
@@ -614,7 +614,7 @@ BUT = [
 getKoef = function (num) {
     r = 1.0;
     for (let i=0;i<num;i++)
-        r*=1.15;
+        r*=1.05;
 
 
     console.log(r);
@@ -1603,7 +1603,7 @@ function onExitState(win = -1) {
         if (game_data.booster_num[win]===0)
             game_data.buyBooster(win);
         else
-            game_data.score+=Math.round((LVL[win].price+5000)/2);
+            game_data.score+=Math.round((LVL[win].price+2500)/2);
 
     }
 
