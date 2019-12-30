@@ -380,7 +380,7 @@ MessageBox = class {
             case 'boost_cant':
 
                 txt = 'Буст: '+this.global.boosters[arg].boost+' мем/сек'+
-                    '\nБустер недоступен.\nДля покупки требуется '+this.global.boosters[arg].price+' мемов';
+                    '\nБустер недоступен.\nДля покупки требуется '+Math.round(this.global.boosters[arg].price*getKoef(game_data.booster_num[arg]))+' мемов';
                 button_frame = 0;
 
                 break;
@@ -388,7 +388,7 @@ MessageBox = class {
 
                 txt = 'Буст: '+this.global.boosters[arg].boost+' мем/сек' +
                     '\nКупить бустер?';
-                button_txt = 'Купить ('+this.global.boosters[arg].price+' мемов)';
+                button_txt = 'Купить ('+Math.round(this.global.boosters[arg].price*getKoef(game_data.booster_num[arg]))+' мемов)';
                 button_frame = 1;
 
                 break;
@@ -610,6 +610,16 @@ BUT = [
     {id:5,name:"pig",unlock:500000,frames:5},
 ];
 
+getKoef = function (num) {
+    r = 1.0;
+    for (let i=0;i<num;i++)
+        r*=1.15;
+
+
+    console.log(r);
+    return r;
+}
+
 let sound_on = true;
 
 let music_main = null;
@@ -677,7 +687,10 @@ GameData = class {
 
 
 
-        this.score -= LVL[id].price;
+        this.score -= Math.round(LVL[id].price*getKoef(game_data.booster_num[id]));
+
+
+
         this.booster_num[id]+=1;
         this.saveData();
     }
@@ -1055,7 +1068,7 @@ States.Main.prototype = {
 
                     if (sound_on)
                         this.snd[this.curr].play();
-                    game_data.score+=1;
+                    game_data.score+=100;
 
                     if (game_data.score>game_data.maxscore)
                     {
