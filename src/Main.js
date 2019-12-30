@@ -1097,12 +1097,12 @@ States.Main.prototype = {
 
             if (music_main===null)
             {
-                music_main = game.add.audio('main-music',1,true);
-                music_volley = game.add.audio('volley-music',1,true);
-                music_pacman = game.add.audio('pacman-music',1,true);
-                music_pvz = game.add.audio('pvz-music',1,true);
-                music_burger = game.add.audio('burger-music',1,true);
-                music_fire = game.add.audio('fire-music',1,true);
+                music_main = game.add.audio('main-music',0.8,true);
+                music_volley = game.add.audio('volley-music',0.5,true);
+                music_pacman = game.add.audio('pacman-music',0.8,true);
+                music_pvz = game.add.audio('pvz-music',0.4,true);
+                music_burger = game.add.audio('burger-music',0.4,true);
+                music_fire = game.add.audio('fire-music',0.5,true);
             }
 
 

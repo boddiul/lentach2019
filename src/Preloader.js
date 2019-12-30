@@ -138,6 +138,15 @@ States.Preloader.prototype = {
         this.load.spritesheet('pvz-man0','assets/pvz/man0.png',100,150);
         this.load.spritesheet('pvz-man1','assets/pvz/man1.png',100,150);
 
+        this.load.audioSprite('pvz-snd-kill1','assets/pvz/kill1.mp3');
+        this.load.audioSprite('pvz-snd-kill2','assets/pvz/kill2.mp3');
+        this.load.audioSprite('pvz-snd-kill3','assets/pvz/kill3.mp3');
+        this.load.audioSprite('pvz-snd-kill4','assets/pvz/kill4.mp3');
+
+        this.load.audioSprite('pvz-snd-punch','assets/pvz/punch.mp3');
+        this.load.audioSprite('pvz-snd-reload','assets/pvz/reload.mp3');
+        this.load.audioSprite('pvz-snd-shot','assets/pvz/shot.mp3');
+
 
         this.load.audioSprite('burger-food1','assets/burger/burger-food1.mp3');
         this.load.audioSprite('burger-food2','assets/burger/burger-food2.mp3');
@@ -168,6 +177,14 @@ States.Preloader.prototype = {
         this.load.image('fire-bar','assets/fire/bar.png');
         this.load.image('fire-bar-bg','assets/fire/bar_bg.png');
 
+
+        this.load.audioSprite('fire-snd-cough1','assets/fire/cough1.mp3');
+        this.load.audioSprite('fire-snd-cough2','assets/fire/cough2.mp3');
+        this.load.audioSprite('fire-snd-cough3','assets/fire/cough3.mp3');
+        this.load.audioSprite('fire-snd-fire','assets/fire/fire.mp3');
+        this.load.audioSprite('fire-snd-wateroff','assets/fire/wateroff.mp3');
+        this.load.audioSprite('fire-snd-wateron','assets/fire/wateron.mp3');
+        this.load.audioSprite('fire-snd-money','assets/fire/money.mp3');
     },
 
     fileComplete: function(progress, cacheKey, success, totalLoaded, totalFiles) {

@@ -71,6 +71,9 @@ States.Fire.prototype = {
             }
 
 
+            if (this.global.timer<=0)
+                this.progress-=0.002;
+
             if (this.global.heli[this.id].active && this.global.heli[this.id].fell)
                 this.progress-=0.004;
 
@@ -243,10 +246,20 @@ States.Fire.prototype = {
         if (this.canControl)
         {
 
+
+
             let i = this.game.input.x < WIDTH/3 ? 0 : this.game.input.x<WIDTH*2/3 ? 1: 2;
 
             if ((!this.heli[i].active && this.money>0.2) ||this.heli[i].active)
+            {
+                if (this.heli[i].active)
+                    this.snd_wateroff.play()
+                else
+                    this.snd_wateron.play();
+
                 this.heli[i].changeState();
+            }
+
 
         }
 
@@ -317,6 +330,18 @@ States.Fire.prototype = {
 
         this.money = 1;
 
+
+
+        this.snd_cough = [this.game.add.audio('fire-snd-cough1'),
+            this.game.add.audio('fire-snd-cough2'),
+            this.game.add.audio('fire-snd-cough3')];
+        this.snd_fire = this.game.add.audio('fire-snd-fire');
+        this.snd_wateroff = this.game.add.audio('fire-snd-wateroff',0.5);
+        this.snd_wateron = this.game.add.audio('fire-snd-wateron',0.5);
+
+        this.money_reload = false;
+        this.snd_money = this.game.add.audio('fire-snd-money');
+
     },
 
     StartControl : function()
@@ -353,18 +378,36 @@ States.Fire.prototype = {
 
             if (this.money<0.15)
             {
+                if (!this.money_reload)
+                {
+                    this.money_reload = true;
+                    this.snd_money.play();
+                }
                 for (let i=0;i<3;i++)
                     if (this.heli[i].active)
                     {
                         this.heli[i].changeState();
                     }
+
             }
+            else
+                this.money_reload = false;
 
             this.timer -= 1/60;
             this.change_timer -= 1/60;
 
             if (this.change_timer <=0)
             {
+
+                if (Math.random()>0.5)
+                {
+                    this.snd_fire.play();
+                }
+                else
+                {
+                    if (Math.max(this.fire[0].progress,this.fire[1].progress,this.fire[2].progress)>0.75)
+                        this.snd_cough[Math.floor(Math.random()*2)].play();
+                }
 
                 for (let i=0;i<3;i++)
                     this.fire[i].active = false;
@@ -394,7 +437,6 @@ States.Fire.prototype = {
             {
                 if (this.trees[i][j].y>this.fire[i].line.y-170)
                 {
-                    console.log("?????DAFAFDF");
 
                     if (this.trees[i][j].frame===0)
                         this.trees[i][j].frame = 1;

@@ -239,6 +239,7 @@ States.Zombies.prototype = {
                 {
                     if (Math.random()<0.05 && !this.sprite.animations.getAnimation('hit').isPlaying)
                     {
+                        this.global.snd_punch.play();
                         this.sprite.animations.play('hit');
                         this.global.hp-=1;
                         if (this.global.hp<0)
@@ -385,6 +386,15 @@ States.Zombies.prototype = {
 
 
         this.game.input.onDown.add(this.click,this);
+
+
+        this.snd_kill = [this.game.add.audio('pvz-snd-kill1'),
+            this.game.add.audio('pvz-snd-kill2'),
+            this.game.add.audio('pvz-snd-kill3'),
+            this.game.add.audio('pvz-snd-kill4')]
+        this.snd_punch = this.game.add.audio('pvz-snd-punch');
+        this.snd_reload = this.game.add.audio('pvz-snd-reload');
+        this.snd_shot = this.game.add.audio('pvz-snd-shot');
     },
 
     StartControl : function()
@@ -410,6 +420,9 @@ States.Zombies.prototype = {
 
         if (this.cat_reload<0)
         {
+
+            this.snd_shot.play();
+
             let angle = Phaser.Point.angle({x:this.cat_x,y:this.cat_y},{x:this.game.input.x,y:this.game.input.y});
             let dist = Phaser.Point.distance({x:this.cat_x,y:this.cat_y},{x:this.game.input.x,y:this.game.input.y});
             this.ball_i+=1;
@@ -458,6 +471,8 @@ States.Zombies.prototype = {
 
                         if (d<40)
                         {
+                            this.snd_kill[Math.floor(Math.random()*3)].play();
+
                             this.ball[i].fall();
                             this.ball[i].spdy-=2;
                             this.man[j].back();
@@ -481,6 +496,12 @@ States.Zombies.prototype = {
 
         if (this.cat_reload>=0)
         {
+
+            if (this.cat_relad-1/50<0)
+            {
+                this.snd_reload.play();
+            }
+
 
             this.cat_reload -= 1/50;
 
