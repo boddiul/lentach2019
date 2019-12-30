@@ -962,6 +962,18 @@ States.Main.prototype = {
         constructor(global) {
 
             this.global = global;
+
+            this.pepey = 100;
+            this.pepe = this.global.game.add.sprite(120,this.pepey,'main-pepe-laugh');
+
+
+
+            this.laugh = -1;
+            this.fff = false;
+
+            this.pepe.scale.setTo(2);
+
+
             this.back = this.global.game.add.sprite(0,0, 'main-bubble');
 
             this.back.anchor.setTo(0.5);
@@ -978,12 +990,37 @@ States.Main.prototype = {
             this.group.add(this.label);
 
             this.group.visible = false;
+
+
         }
 
+
+        update()
+        {
+
+            if (this.laugh>0)
+            {
+                this.laugh-=1/60;
+                this.pepe.y = this.pepey+Math.sin(this.laugh*18)*8;
+                this.pepe.frame = 1;
+            }
+            else
+            {
+
+                this.pepe.y = this.pepey;
+
+
+                if (this.fff)
+                    this.pepe.frame = 1;
+                else
+                    this.pepe.frame = 0;
+            }
+        }
 
         show() {
             this.group.visible = true;
             this.group.scale.setTo(0.1);
+
 
 
 
@@ -995,12 +1032,16 @@ States.Main.prototype = {
 
 
             tw1.onComplete.add(function () {
+                    this.laugh = 1;
+                    this.fff = true;
                     let tw2 = this.global.game.add.tween(this.group.scale)
                         .to({ x:1.9,y:1.9 },3000,Phaser.Easing.Quartic.Out);
                     tw2.onComplete.add(function () {
+                        this.fff = false;
                         let tw3 = this.global.game.add.tween(this.group.scale)
                             .to({ x:0.1,y:0.1 },300,Phaser.Easing.Back.In);
                             tw3.onComplete.add(function () {
+
                             this.group.visible = false;
                         },this)
                             tw3.start();
@@ -1399,6 +1440,7 @@ States.Main.prototype = {
 
             this.start_pressed+=1;
 
+            if (sound_on)
             this.button_clicker.snd[0].play();
 
             if (this.start_pressed>30)
@@ -1469,6 +1511,7 @@ States.Main.prototype = {
             this.boost_time = 1;
         }
 
+        this.bubble.update();
 
         
         this.score_text.text = ''+game_data.score;

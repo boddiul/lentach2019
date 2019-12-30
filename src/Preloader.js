@@ -79,6 +79,7 @@ States.Preloader.prototype = {
 
         this.load.spritesheet('main-level','assets/main/button_level.png',72,72);
 
+        this.load.spritesheet('main-pepe-laugh','assets/main/pepe_laugh.png',64,64);
 
         this.load.image('main-shop','assets/main/shop.png');
 
