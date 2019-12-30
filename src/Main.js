@@ -491,6 +491,7 @@ function screen_click() {
     screen_clicked = true;
 }
 
+
 document.addEventListener("click", screen_click);
 document.addEventListener("touchstart", screen_click);
 
@@ -914,7 +915,8 @@ States.Main.prototype = {
                     if (BUT[this.curr].frames>2)
                         this.button[this.curr].animations.play('click');
 
-                    this.snd[this.curr].play();
+                    if (sound_on)
+                        this.snd[this.curr].play();
                     game_data.score+=100;
 
                     this.global.button_pepe.show();
@@ -973,7 +975,8 @@ States.Main.prototype = {
                         }
 
                         this.global.button_clicker.setCurr(id);
-                        this.global.button_clicker.snd[id].play();
+                        if (sound_on)
+                            this.global.button_clicker.snd[id].play();
 
                     },this));
                 this.button[i].scale.setTo(1.5);
@@ -1159,9 +1162,27 @@ States.Main.prototype = {
 
         this.button_sound = this.game.add.button(WIDTH-100,1125,'main-button_sound', function () {
 
+
+            sound_on = !sound_on;
+
+            if (sound_on)
+            {
+                this.button_sound.frame = 0;
+                this.button_clicker.snd[0].play();
+                music_main.play();
+            }
+            else
+            {
+                this.button_sound.frame = 1;
+
+                music_main.pause();
+            }
+
         },this);
         this.button_sound.anchor.setTo(0.5,0.5);
         this.button_sound.scale.setTo(3,3);
+
+        this.button_sound.frame = sound_on ? 0:1;
 
 
 
@@ -1230,7 +1251,7 @@ States.Main.prototype = {
 
         this.button_pepe.update();
 
-        if (screen_clicked && !music_main.isPlaying)
+        if (screen_clicked && !music_main.isPlaying && sound_on)
             music_main.play();
 
     }

@@ -201,7 +201,8 @@ States.Pacman.prototype = {
                         this.global.total-=1;
 
 
-                        this.global.snd_pick.play();
+                        if (sound_on)
+                            this.global.snd_pick.play();
                         if (this.global.total<=0 && !this.endGame)
                         {
                             this.global.Win();
@@ -392,7 +393,8 @@ States.Pacman.prototype = {
     create: function () {
 
         music_main.stop();
-        music_pacman.play();
+        if (sound_on)
+            music_pacman.play();
 
         this.back = this.game.add.sprite(0,0,'pacman-back');
 
@@ -529,7 +531,8 @@ States.Pacman.prototype = {
                     this.stars[this.hp-1].visible = false;
                     this.hp-=1;
 
-                    this.snd_damage.play();
+                    if (sound_on)
+                        this.snd_damage.play();
 
                     if (this.hp <= 0 && !this.endGame)
                     {

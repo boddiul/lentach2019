@@ -57,7 +57,8 @@ States.Volleyball.prototype = {
     create: function () {
 
         music_main.stop();
-        music_volley.play();
+        if (sound_on)
+            music_volley.play();
         wining = game.add.audio('volley-win');
         wining.loop = false;
         losing = game.add.audio('volley-losing');
@@ -216,7 +217,8 @@ function Shadow(){
 
 function throwBall(ball,x,y,PlayerThrow)
 {
-    snus[game.rnd.integerInRange(1, 3)].play();
+    if (sound_on)
+        snus[game.rnd.integerInRange(1, 3)].play();
     if(PlayerThrow){
         shadow.y = y+70;
         drugstweenX = game.add.tween(ball).to( {x:x}, 1200, Phaser.Easing.Quadratic.Out, true)
@@ -298,7 +300,8 @@ function throwBall(ball,x,y,PlayerThrow)
             canControl = false;
             enemyScore++;
             enemyScoreText.setText(enemyScore.toString(10));
-            losing.play();
+            if (sound_on)
+                losing.play();
             game.time.events.add(Phaser.Timer.SECOND * 2, function(){canControl =true;} , this);
             game.time.events.add(Phaser.Timer.SECOND * 1, 
                 function(){
@@ -318,7 +321,8 @@ function throwBall(ball,x,y,PlayerThrow)
     function WinOnePoint(){
         playerScore++;
         playerScoreText.setText(playerScore.toString(10));
-        wining.play();
+        if (sound_on)
+            wining.play();
         game.time.events.add(Phaser.Timer.SECOND * 0.8, 
             function(){
                 if(needDrugsMoveUp){

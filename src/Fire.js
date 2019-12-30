@@ -252,10 +252,14 @@ States.Fire.prototype = {
 
             if ((!this.heli[i].active && this.money>0.2) ||this.heli[i].active)
             {
-                if (this.heli[i].active)
-                    this.snd_wateroff.play()
-                else
-                    this.snd_wateron.play();
+                if (sound_on)
+                {
+                    if (this.heli[i].active)
+                        this.snd_wateroff.play()
+                    else
+                        this.snd_wateron.play();
+                }
+
 
                 this.heli[i].changeState();
             }
@@ -269,7 +273,8 @@ States.Fire.prototype = {
 
 
         music_main.stop();
-        music_fire.play();
+        if (sound_on)
+            music_fire.play();
 
         this.game.add.sprite(0,0,'fire-back');
 
@@ -381,7 +386,8 @@ States.Fire.prototype = {
                 if (!this.money_reload)
                 {
                     this.money_reload = true;
-                    this.snd_money.play();
+                    if (sound_on)
+                        this.snd_money.play();
                 }
                 for (let i=0;i<3;i++)
                     if (this.heli[i].active)
@@ -401,12 +407,14 @@ States.Fire.prototype = {
 
                 if (Math.random()>0.5)
                 {
-                    this.snd_fire.play();
+                    if (sound_on)
+                        this.snd_fire.play();
                 }
                 else
                 {
-                    if (Math.max(this.fire[0].progress,this.fire[1].progress,this.fire[2].progress)>0.75)
-                        this.snd_cough[Math.floor(Math.random()*2)].play();
+                    if (sound_on)
+                        if (Math.max(this.fire[0].progress,this.fire[1].progress,this.fire[2].progress)>0.75)
+                            this.snd_cough[Math.floor(Math.random()*2)].play();
                 }
 
                 for (let i=0;i<3;i++)

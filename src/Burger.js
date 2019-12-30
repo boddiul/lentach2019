@@ -35,7 +35,8 @@ States.Burger.prototype = {
         mood = 50;
 
         music_main.stop();
-        music_burger.play();
+        if (sound_on)
+            music_burger.play();
 
 
 
@@ -227,11 +228,15 @@ function Loose(){
 }
 function ClickNice(peekHole){
     if(peekHole.canClick){
-        if(game.rnd.integerInRange(1,100)<50){
-            food1.play();
-        }else{
-            food2.play();
+        if (sound_on)
+        {
+            if(game.rnd.integerInRange(1,100)<50){
+                food1.play();
+            }else{
+                food2.play();
+            }
         }
+
         peekHole.clap.alpha = 1;
         game.time.events.add(Phaser.Timer.SECOND * 0.2, 
             function(){
@@ -243,7 +248,8 @@ function ClickNice(peekHole){
 }
 function ClickFail(peekHole){
     if(peekHole.canClick){
-        shit.play();
+        if (sound_on)
+            shit.play();
         peekHole.clap.alpha = 1;
         game.time.events.add(Phaser.Timer.SECOND * 0.2, 
             function(){
