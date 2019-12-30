@@ -104,6 +104,10 @@ MessageBox = class {
 
         this.bottom = 100;
 
+        this.help = this.global.game.add.sprite(0,140,'common-help');
+        this.help.anchor.setTo(0.5, 0.5);
+        this.help.scale.setTo(2,2);
+
         this.label = this.global.game.add.text(0,0,'...',
             {font: '22pt PIX',wordWrap:true,align: 'left', wordWrapWidth: this.width[0]*0.88});
 
@@ -135,10 +139,13 @@ MessageBox = class {
 
         this.group.add(this.back);
         this.group.add(this.back_console);
+        this.group.add(this.help);
         this.group.add(this.label);
         this.group.add(this.label_console);
         this.group.add(this.button);
         this.group.add(this.button_label);
+
+
 
 
         this.group.visible = false;
@@ -290,6 +297,7 @@ MessageBox = class {
         let button_txt = 'OK';
         let button_frame = -1;
 
+        let help_frame = -1;
 
         let is_console = false;
 
@@ -378,6 +386,16 @@ MessageBox = class {
 
             case 'help':
 
+                switch (arg)
+                {
+                    case 0: break;
+                    case 1: break;
+                    case 2: break;
+                    case 3: break;
+                    case 4: break;
+                }
+
+                help_frame = arg+1;
                 txt = 'Справка по уровню';
                 button_txt = 'Начать игру';
                 button_frame = 1;
@@ -386,6 +404,14 @@ MessageBox = class {
 
             case 'loose':
 
+                switch (arg)
+                {
+                    case 0: break;
+                    case 1: break;
+                    case 2: break;
+                    case 3: break;
+                    case 4: break;
+                }
                 txt = 'Проиграл';
 
                 button_txt = 'RESTART';
@@ -395,6 +421,14 @@ MessageBox = class {
 
             case 'win':
 
+                switch (arg)
+                {
+                    case 0: break;
+                    case 1: break;
+                    case 2: break;
+                    case 3: break;
+                    case 4: break;
+                }
                 txt = 'Победа';
 
                 button_txt = 'CONTINUE';
@@ -417,6 +451,9 @@ MessageBox = class {
             this.back.visible = false;
             this.label.visible = false;
             this.button.visible = false;
+            this.button_label.visible = false;
+
+            this.help.visible = false;
 
             this.back_console.visible = true;
             this.label_console.visible = true;
@@ -429,11 +466,22 @@ MessageBox = class {
             this.label.visible = true;
             this.button.visible = true;
 
+
             this.back_console.visible = false;
             this.label_console.visible = false;
 
 
             this.label.text = txt;
+
+            if (help_frame<0)
+            {
+                this.help.visible = false;
+            }
+            else
+            {
+                this.help.visible = true;
+                this.help.frame = help_frame;
+            }
 
             if (button_frame<0)
             {
@@ -442,6 +490,7 @@ MessageBox = class {
             else
             {
                 this.button.visible = true;
+                this.button_label.visible = true;
                 this.button.frame = button_frame;
                 this.button_label.text = button_txt;
             }

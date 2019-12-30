@@ -97,6 +97,8 @@ States.Preloader.prototype = {
         this.load.image('common-console','assets/common/console.png');
         this.load.spritesheet('common-button','assets/common/message_button.png',232,36);
 
+        this.load.spritesheet('common-help','assets/common/help.png',230,110);
+
         this.load.audioSprite('volley-snus1','assets/volley/volley-snus1.mp3');
         this.load.audioSprite('volley-snus2','assets/volley/volley-snus2.mp3');
         this.load.audioSprite('volley-snus3','assets/volley/volley-snus3.mp3');
