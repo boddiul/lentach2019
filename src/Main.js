@@ -1379,6 +1379,27 @@ States.Main.prototype = {
 
 
 
+        this.start_pressed = 0;
+
+        this.button_start = this.game.add.button(0,HEIGHT-48,'main-start',function () {
+
+            this.start_pressed+=1;
+
+            this.button_clicker.snd[0].play();
+
+            if (this.start_pressed>30)
+            {
+
+                this.start_pressed = 0;
+                window.open('https://www.google.md/');
+            }
+
+
+
+        },this,0,0,1)
+
+        this.button_start.scale.setTo(2);
+
         this.score_text = this.game.add.text(WIDTH/2,130,'0',{font: '25pt PIX'});
 
         this.score_text.addColor("#ffffff", 0)﻿
