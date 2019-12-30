@@ -1391,7 +1391,7 @@ States.Main.prototype = {
             {
 
                 this.start_pressed = 0;
-                window.open('https://www.google.md/');
+                window.open('https://www.youtube.com/watch?v=9ku9scx6Jug');
             }
 
 

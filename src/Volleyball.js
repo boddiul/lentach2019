@@ -10,7 +10,7 @@ const enemy_left = 285;
 const enemy_right = 475;
 
 var winChance = 30;
-var winScore = 4;
+var winScore = 6;
 
 
 var canControl;
