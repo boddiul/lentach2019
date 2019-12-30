@@ -310,10 +310,10 @@ States.Fire.prototype = {
 
         this.game.input.onDown.add(this.onDown,this);
 
-
+        this.bar = this.game.add.sprite(265,75,'fire-bar');
         this.bar_bg = this.game.add.sprite(WIDTH/2,90,'fire-bar-bg');
         this.bar_bg.anchor.setTo(0.5);
-        this.bar = this.game.add.sprite(265,75,'fire-bar');
+
 
         this.bar.width = 260;
 
