@@ -471,7 +471,7 @@ MessageBox = class {
                     case 0: txt = 'Тапай по клеткам для перемещения по полю. Для того, чтобы отбить пакет, тапай по сотруднику.';
                         break;
                     case 1: txt = 'Используй руль, либо стрелки, чтобы перемещаться по улицам и подбирать протестующих. Остерегайся пластиковой продукции!';break;
-                    case 2: txt = 'Тапай чтобы выстрелить мусорным пакетом. Защищай колону спецтехники';break;
+                    case 2: txt = 'Тапай, чтобы выстрелить мусорным пакетом. Защищай колонну спецтехники';break;
                     case 3: txt = 'Отшлёпай все бургеры за здоровье мэра. Но остерегайся творчества российских рэперов.';break;
                     case 4: txt = 'Тапай по вертолётам, чтобы переключать поток воды.Постарайся сделать всё так, чтобы тушение леса было экономически выгодным.';break;
                 }
@@ -499,6 +499,7 @@ MessageBox = class {
 
                 button_frame = 1;
 
+				if (sound_on)
                 this.snd_loose.play();
                 break;
 
@@ -517,7 +518,7 @@ MessageBox = class {
 
                 button_frame = 1;
 
-
+if (sound_on)
                 this.snd_win.play();
 
                 break;
@@ -1068,7 +1069,7 @@ States.Main.prototype = {
 
                     if (sound_on)
                         this.snd[this.curr].play();
-                    game_data.score+=100;
+                    game_data.score+=1;
 
                     if (game_data.score>game_data.maxscore)
                     {
