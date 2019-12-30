@@ -467,6 +467,14 @@ LVL = [
     {id:3,name:"Burger",price:5000,ico:'burger.exe',boost:13},
     {id:4,name:"Fire",price:10000,ico:'fire.exe',boost:47}];
 
+BUT = [
+    {id:0,name:"clicker",unlock:0,frames:2},
+    {id:1,name:"f",unlock:1500,frames:2},
+    {id:2,name:"coin",unlock:4000,frames:5},
+    {id:3,name:"dont",unlock:6000,frames:2},
+    {id:4,name:"milos",unlock:20000,frames:2},
+    {id:5,name:"pig",unlock:100000,frames:5},
+];
 
 let sound_on = true;
 
@@ -484,6 +492,8 @@ function screen_click() {
 }
 
 document.addEventListener("click", screen_click);
+document.addEventListener("touchstart", screen_click);
+
 
 GameData = class {
 
@@ -858,13 +868,53 @@ States.Main.prototype = {
 
             this.global=global;
 
-            this.button = this.global.add.button(WIDTH/2,950,'main-clicker', function () {
 
 
+            this.button =[null,null,null,null,null,null];
+            this.snd =[null,null,null,null,null,null];
+
+            for (let i=0;i<6;i++)
+            {
+                if (BUT[i].frames>2)
+                {
+                    this.button[i] = this.global.game.add.button(WIDTH/2,950,'main-'+BUT[i].name,this.click,this);
+                    this.button[i].animations.add('click',[1,2,3,4,0],15,false);
+                }
+                else
+                {
+                    this.button[i] = this.global.game.add.button(WIDTH/2,950,'main-'+BUT[i].name,this.click,this,0,0,1)
+                }
+
+
+                this.button[i].anchor.setTo(0.5, 0.5);
+                this.button[i].scale.setTo(2,2);
+                this.button[i].visible = false;
+
+                this.snd[i] = this.global.game.add.audio('main-snd-'+BUT[i].name);
+            }
+
+
+            this.curr = 0;
+            this.button[0].visible = true;
+
+
+        }
+
+        setCurr(i){
+            this.button[this.curr].visible = false;
+            this.curr = i;
+            this.button[this.curr].visible = true;
+        }
+        click() {
 
                 if (!this.global.hud_busy()) {
 
 
+
+                    if (BUT[this.curr].frames>2)
+                        this.button[this.curr].animations.play('click');
+
+                    this.snd[this.curr].play();
                     game_data.score+=100;
 
                     this.global.button_pepe.show();
@@ -875,11 +925,112 @@ States.Main.prototype = {
                     }
                 }
 
-            },this,0,0,1,0);
-
-            this.button.anchor.setTo(0.5, 0.5);
-            this.button.scale.setTo(2,2);
         }
+
+    },
+
+
+    Shop : class {
+        constructor(global) {
+
+            this.global = global;
+
+            this.group = this.global.game.add.group();
+
+            this.back = this.global.game.add.sprite(WIDTH/2,HEIGHT/2-100,'main-shop');
+            this.back.scale.setTo(2);
+            this.back.anchor.setTo(0.5);
+
+
+            this.width= 310*2;
+            this.height = 440*2;
+
+            this.group.add(this.back);
+
+            this.group.visible = false;
+
+
+            this.button = [];
+
+            let xy = [[0,0],[-1,1],[1,1],[-1,2],[1,2],[0,3]]
+
+            for (let i=0;i<6;i++)
+            {
+                this.button.push(this.global.game.add.button(WIDTH/2+xy[i][0]*120,HEIGHT/2-this.width*0.45+xy[i][1]*190-100,
+                    'main-'+BUT[i].name,function() {
+
+                    let bestd =-1;
+                    let id = 0;
+                        for (let i=0;i<6;i++)
+                        {
+                            let d = Phaser.Point.distance({x:this.button[i].x,y:this.button[i].y},{x:this.global.game.input.x,y:this.global.game.input.y});
+
+                            if (d<bestd || bestd ===-1)
+                            {
+                                bestd = d;
+                                id = i;
+                            }
+                        }
+
+                        this.global.button_clicker.setCurr(id);
+                        this.global.button_clicker.snd[id].play();
+
+                    },this));
+                this.button[i].scale.setTo(1.5);
+                this.button[i].anchor.setTo(0.5);
+                this.group.add(this.button[i]);
+            }
+
+            this.opened = -1;
+
+
+            this.global.game.input.onDown.add(this.onClick,this);
+
+            this.global.game.input.onUp.add(this.onUp,this);
+
+        }
+
+
+        onUp() {
+            if (this.opened>0.5 && !this.group.visible)
+            {
+                let tw =this.global.game.add.tween(this);
+
+                tw.to({ opened:-1 },10);
+                tw.start();
+            }
+        }
+
+        onClick() {
+
+
+            if (this.group.visible) {
+                let clickedOnWindow =
+                    Math.abs(this.global.game.input.x - WIDTH / 2) < this.width / 2 &&
+                    Math.abs(this.global.game.input.y - HEIGHT / 2+100) < this.height / 2;
+
+
+                if (!clickedOnWindow)
+                {
+                    this.close();
+
+                }
+
+
+            }
+
+        }
+
+        open() {
+            this.group.visible = true;
+
+            this.opened = 1;
+        }
+
+        close(){
+            this.group.visible = false;
+        }
+
 
     },
 
@@ -897,6 +1048,7 @@ States.Main.prototype = {
     score : 0,
     boosters : null,
     button_clicker : null,
+    shop : null,
     button_pepe : null,
     bubble : null,
 
@@ -906,7 +1058,7 @@ States.Main.prototype = {
     hud_busy : function() {
         //return this.message_box.group.visible;///this.message_box.opened>0;
 
-        return this.message_box.opened>0;
+        return this.message_box.opened>0 || this.shop.opened>0;
     },
 
     reset : function(){
@@ -979,7 +1131,7 @@ States.Main.prototype = {
 
         this.button_clicker = new this.ButtonClicker(this);
 
-        this.button_pepe = new this.PepeFabric(this,6,1.5,WIDTH/2,400,970-100,50);
+        this.button_pepe = new this.PepeFabric(this,6,1.5,WIDTH/2,300,970-100,50);
 
 
 
@@ -998,7 +1150,9 @@ States.Main.prototype = {
 
 
         this.button_shop = this.game.add.button(WIDTH/2,1125,'main-button_shop', function () {
-
+            if (!this.hud_busy()) {
+                this.shop.open();
+            }
         },this);
         this.button_shop.anchor.setTo(0.5,0.5);
         this.button_shop.scale.setTo(3,3);
@@ -1017,6 +1171,7 @@ States.Main.prototype = {
         this.score_text.addColor("#ffffff", 0)﻿
 
 
+        this.shop = new this.Shop(this);
 
         this.message_box = new MessageBox(this);
 

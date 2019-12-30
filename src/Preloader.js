@@ -68,7 +68,25 @@ States.Preloader.prototype = {
         this.load.spritesheet('main-booster4','assets/main/booster4.png',50,50);
 
         this.load.spritesheet('main-level','assets/main/button_level.png',72,72);
+
+
+        this.load.image('main-shop','assets/main/shop.png');
+
         this.load.spritesheet('main-clicker','assets/main/button_clicker.png',225,90);
+        this.load.spritesheet('main-coin','assets/main/button_coin.png',500/5,102);
+        this.load.spritesheet('main-dont','assets/main/button_dont.png',345/2,163);
+        this.load.spritesheet('main-f','assets/main/button_f.png',200/2,102);
+        this.load.spritesheet('main-pig','assets/main/button_pig.png',644/5,126);
+        this.load.spritesheet('main-milos','assets/main/button_milos.png',250/2,125);
+
+
+        this.load.audioSprite('main-snd-clicker','assets/main/clicker.mp3');
+        this.load.audioSprite('main-snd-coin','assets/main/coin.mp3');
+        this.load.audioSprite('main-snd-dont','assets/main/dont.mp3');
+        this.load.audioSprite('main-snd-f','assets/main/f.mp3');
+        this.load.audioSprite('main-snd-pig','assets/main/pig.mp3');
+        this.load.audioSprite('main-snd-milos','assets/main/milos.mp3');
+
 
         this.load.spritesheet('main-pepe','assets/main/pepe.png',50,50);
         this.load.image('main-bubble','assets/main/bubble.png');
