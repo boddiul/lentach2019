@@ -200,6 +200,8 @@ States.Pacman.prototype = {
                     {
                         this.global.total-=1;
 
+
+                        this.global.snd_pick.play();
                         if (this.global.total<=0 && !this.endGame)
                         {
                             this.global.Win();
@@ -494,6 +496,11 @@ States.Pacman.prototype = {
         //this.game.input.onHold.add(this.onDown,this);
         //this.game.input.onUp.add(this.onUp,this);
 
+
+        this.snd_damage = this.game.add.sound('pacman-snd-damage');
+
+        this.snd_pick = this.game.add.sound('pacman-snd-pick');
+        this.snd_pick.volume = 0.3;
     },
 
     update: function () {
@@ -521,6 +528,8 @@ States.Pacman.prototype = {
                     game.camera.shake(0.03, 300,true,Phaser.Camera.SHAKE_HORIZONTAL);
                     this.stars[this.hp-1].visible = false;
                     this.hp-=1;
+
+                    this.snd_damage.play();
 
                     if (this.hp <= 0 && !this.endGame)
                     {

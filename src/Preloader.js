@@ -125,6 +125,9 @@ States.Preloader.prototype = {
         this.load.image('pacman-big_circle','assets/pacman/circle_big.png');
         this.load.image('pacman-small_circle','assets/pacman/circle_small.png');
 
+        this.load.audioSprite('pacman-snd-damage','assets/pacman/damage.mp3');
+        this.load.audioSprite('pacman-snd-pick','assets/pacman/food.mp3');
+
         this.load.image('pvz-back','assets/pvz/back.png');
         this.load.image('pvz-trees','assets/pvz/trees.png');
         this.load.image('pvz-truck0','assets/pvz/truck0.png');
