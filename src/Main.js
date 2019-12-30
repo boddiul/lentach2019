@@ -137,6 +137,9 @@ MessageBox = class {
         this.height = [380*2,520*2];
 
 
+        this.snd_win = this.global.game.add.audio('common-win');
+        this.snd_loose = this.global.game.add.audio('common-loose');
+
         this.bottom = 100;
 
         this.help = this.global.game.add.sprite(0,140,'common-help');
@@ -485,8 +488,8 @@ MessageBox = class {
                 switch (arg)
                 {
                     case 0: txt = 'Похоже, кому-то нужно поработать над бросками. Ты проиграл.';break;
-                    case 1: txt = 'Виу-виу! Все бузотёры отправлены в автозак. Так держать!';break;
-                    case 2: txt = 'Отлично! Спецтехника на месте, сейчас мы будем строить все полигоны.';break;
+                    case 1: txt = 'Пластмассовый мир победил, стакан оказался сильней. Не в этот раз, нужно залечить раны.';break;
+                    case 2: txt = 'Экоактивисты добились своего. Строительство прикрыли, ты проиграл.';break;
                     case 3: txt = 'Кажется, ты весь в русском рэпе. Прими душ и начинай заново.';break;
                     case 4: txt = 'Ну нет, держать при себе такого пожарного экономически невыгодно. ';break;
                 }
@@ -495,6 +498,8 @@ MessageBox = class {
                 button_txt = 'RESTART';
 
                 button_frame = 1;
+
+                this.snd_loose.play();
                 break;
 
             case 'win':
@@ -502,8 +507,8 @@ MessageBox = class {
                 switch (arg)
                 {
                     case 0: txt = 'Груз на месте… Птичка в клетке… Суп в холодильнике… В общем, всё получилось, поздравляю!';break;
-                    case 1: txt = 'Пластмассовый мир победил, стакан оказался сильней. Не в этот раз, нужно залечить раны.';break;
-                    case 2: txt = 'Экоактивисты добились своего. Строительство прикрыли, ты проиграл.';break;
+                    case 1: txt = 'Виу-виу! Все бузотёры отправлены в автозак. Так держать!';break;
+                    case 2: txt = 'Отлично! Спецтехника на месте, сейчас мы будем строить все полигоны.';break;
                     case 3: txt = 'Йо! Здоровье в порядке, все бургеры отшлёпаны. Ты выиграл этот бой, бой.';break;
                     case 4: txt = 'Леса спасены, деньги сохранены, все довольны.';break;
                 }
@@ -511,6 +516,9 @@ MessageBox = class {
                 button_txt = 'CONTINUE';
 
                 button_frame = 1;
+
+
+                this.snd_win.play();
 
                 break;
 
@@ -1047,7 +1055,7 @@ States.Main.prototype = {
 
                     if (sound_on)
                         this.snd[this.curr].play();
-                    game_data.score+=100;
+                    game_data.score+=1;
 
                     if (game_data.score>game_data.maxscore)
                     {
@@ -1087,7 +1095,7 @@ States.Main.prototype = {
             this.group.add(this.back);
 
 
-
+            this.snd_vvv = this.global.game.add.audio('main-vvv');
 
             this.button = [];
             this.locked = [];
@@ -1193,6 +1201,9 @@ States.Main.prototype = {
                     this.global.button_shop.frame = 1;
 
                     this.aa = 0;
+
+                    if (sound_on)
+                        this.snd_vvv.play();
 
                     let tw = this.global.game.add.tween(this);
                     tw.to({aa:100},2000);

@@ -70,6 +70,12 @@ States.Preloader.prototype = {
 
         this.load.image('main-shop-locked','assets/main/shop_locked.png');
 
+        this.load.spritesheet('main-start','assets/main/start.png',57,24);
+        this.load.audioSprite('main-vvv','assets/main/vvv.mp3');
+
+        this.load.audioSprite('common-win','assets/common/win.mp3');
+        this.load.audioSprite('common-loose','assets/common/loose.mp3');
+
 
         this.load.spritesheet('main-level','assets/main/button_level.png',72,72);
 
