@@ -342,11 +342,35 @@ MessageBox = class {
 
             case 'intro1':
 
-                txt = 'Ура! С Новым Суверенным Интернетом! Все тесты прошли успешно и у тебя есть уникальнейшая возможность испробовать его первым! Правда, делать в нём пока особо нечего. Но есть одна лазейка, с помощь которой ты можешь сохранять мемы. Говорят, совсем скоро они станут настолько редкими, что превратятся в настоящую валюту.\n' +
+                txt = 'Ура! С Новым Суверенным Интернетом! Тесты прошли успешно и у тебя есть уникальная возможность испробовать его первым! Точнее, у тебя есть важная миссия — необходимо сохранить все мемы. Говорят, совсем скоро они станут настолько редкими, что превратятся в настоящую валюту.\n' +
                     '\n' +
-                    'Скачай как можно больше мемасов, чтобы потом было с чего поорать.';
+                    'Скачай как можно больше мемасов, чтобы потом было с чего поорать.'
 
                 is_console = true;
+
+                break;
+
+            case 'tutorial_100':
+                txt = 'Это бустеры — мемные вирусы, которые помогут тебе скачивать продуктивнее. \n' +
+                    '\n' +
+                    'Чтобы открыть бустер, нужно доказать товарищу майору, что ты не злоумышленник и пройти капчу.';
+
+                help_frame = 0;
+
+                break;
+
+            case 'tutorial_game':
+                txt = 'Так держать, ты доказал, что ты добропорядочный гражданин! Теперь можно спокойно приобрести бустер.\n' +
+                    '\n' +
+                    'Кстати, капчу можно проходить повторно, чтобы получить дополнительные мемчики.';
+
+                help_frame = 0;
+                break;
+
+            case 'final':
+                txt = 'Отлично, ты прошел всю капчу. Но это не значит, что ты не можешь пройти её ещё раз — играй в игры и зарабатывай дополнительные мемы!';
+
+
 
                 break;
 
@@ -393,25 +417,43 @@ MessageBox = class {
 
 
                 if (arg===0)
-                    txt = '7 июня полиция задержала корреспондента «Медузы» Ивана Голунова по подозрению «в попытке сбыта наркотиков». Дело получило большой резонанс из-за нарушений со стороны правоохранителей, а также из-за последовавших митингов в поддержку Ивана. \n' +
+                    txt = '7 июня полиция задержала корреспондента «Медузы» Ивана Голунова по подозрению «в попытке сбыта наркотиков». Дело получило большой резонанс из-за нарушений со стороны правоохранителей, а также из-за митингов в поддержку Ивана. \n' +
                         '\n' +
-                        'Позже оказалось, что пакет с веществами подкинули и журналиста отпустили из-за отсутствия доказательств его вины.\n' +
+                        'Позже оказалось, что пакет с веществами подкинули и журналиста отпустили.\n' +
                         '\n' +
-                        'Это, конечно, возмутительно. Но вы сами попробуйте нормально подкинуть пакет.';
+                        'Это, конечно, возмутительно. Но вы сами попробуйте нормально подкинуть обычный пакет.';
 
                 if (arg===1)
-                    txt = 'текст про пакмана';
+                    txt = '27 июля в Москве прошла несогласованная акция протеста «За честные выборы», в ходе которой было задержано рекордное количество человек.\n' +
+                        '\n' +
+                        'Акция дала старт расследованию «Московского дела», некоторых фигурантов которого обвинили в таких нарушениях, как бросок пластиковой бутылки или стаканчика в сторону силовика.\n' +
+                        '\n' +
+                        'Это, конечно, возмутительно. Но вы сами попробуйте нормально задержать митингующих, когда вокруг опасность.';
 
                 if (arg===2)
-                    txt = 'текст про Шуес';
+                    txt = 'Рядом со станцией Шиес запланировали построить мусорный полигон. Это очень возмутило местных жителей, которые начали всячески мешать строительству.\n' +
+                        '\n' +
+                        'Сотрудники местного ЧОП избивали экоактивистов, а силовики задерживали противников строительства и вменяли им различные правонарушения. Позже стройку приостановили. Её возобновят только после общественных слушаний и экспертиз.\n' +
+                        '\n' +
+                        'Это, конечно, возмутительно. Но вы сами попробуйте завезти технику, когда проезду мешают активисты.\n';
 
 
                 if (arg===3)
-                    txt = 'текст про Бургеры';
+                    txt = '«Хлопну бургер за здоровье Собянина» \n' +
+                        '\n' +
+                        'Тимати и Гуф поздравили Москву с днём рождения и сняли очень неоднозначный клип. Ролик вышел за день до выборов в Мосгордуму и получил более 1 000 000 дизлайков, что стало рекордом русского ютьюба.\n' +
+                        '\n' +
+                        'Позже клип удалили.\n' +
+                        '\n' +
+                        'Это, конечно, возмутительно. Но всё-таки хлопни бургер за здоровье Сергея Семёновича.';
 
 
                 if (arg===4)
-                    txt = 'текст про пожары';
+                    txt = 'Одна из главных тем года в России — пожары в Сибири. В июле площадь горящего леса превысила 3 000 000 гектаров, а многие города погрузились в смог.\n' +
+                        'Однако, несмотря на масштабы пожаров, МЧС и региональные власти не собирались тушить лес. По их мнению, бороться с такими пожарами было «экономически невыгодно», так как они не представляли угрозы людям и инфраструктуре.\n' +
+                        'И только после введения режима ЧС в пяти регионах, а также возмущения людей по всему миру, с пожарами стали бороться.\n' +
+                        '\n' +
+                        'Это, конечно, возмутительно. Но вы сами посмотрите, как это всё экономически невыгодно.';
 
 
 
@@ -423,15 +465,16 @@ MessageBox = class {
 
                 switch (arg)
                 {
-                    case 0: break;
-                    case 1: break;
-                    case 2: break;
-                    case 3: break;
-                    case 4: break;
+                    case 0: txt = 'Тапай по клеткам для перемещения по полю. Для того, чтобы отбить пакет, тапай по сотруднику.';
+                        break;
+                    case 1: txt = 'Используй руль, либо стрелки, чтобы перемещаться по улицам и подбирать протестующих. Остерегайся стаканчиков и другой пластиковой продукции.';break;
+                    case 2: txt = 'Тапай чтобы выстрелить мусорным пакетом. Защищай колону спецтехники';break;
+                    case 3: txt = 'Отшлёпай все бургеры за здоровье мэра. Но остерегайся творчества российских рэперов.';break;
+                    case 4: txt = 'Тапай по вертолётам, чтобы переключать потоки воды. Постарайся сделать всё так, чтобы тушение леса было экономически выгодным.';break;
                 }
 
                 help_frame = arg+1;
-                txt = 'Справка по уровню';
+
                 button_txt = 'Начать игру';
                 button_frame = 1;
 
@@ -441,13 +484,13 @@ MessageBox = class {
 
                 switch (arg)
                 {
-                    case 0: break;
-                    case 1: break;
-                    case 2: break;
-                    case 3: break;
-                    case 4: break;
+                    case 0: txt = 'Похоже, кому-то нужно поработать над бросками. Ты проиграл.';break;
+                    case 1: txt = 'Виу-виу! Все бузотёры отправлены в автозак. Так держать!';break;
+                    case 2: txt = 'Отлично! Спецтехника на месте, сейчас мы будем строить все полигоны.';break;
+                    case 3: txt = 'Кажется, ты весь в русском рэпе. Прими душ и начинай заново.';break;
+                    case 4: txt = 'Ну нет, держать при себе такого пожарного экономически невыгодно. ';break;
                 }
-                txt = 'Проиграл';
+
 
                 button_txt = 'RESTART';
 
@@ -458,13 +501,12 @@ MessageBox = class {
 
                 switch (arg)
                 {
-                    case 0: break;
-                    case 1: break;
-                    case 2: break;
-                    case 3: break;
-                    case 4: break;
+                    case 0: txt = 'Груз на месте… Птичка в клетке… Суп в холодильнике… В общем, всё получилось, поздравляю!';break;
+                    case 1: txt = 'Пластмассовый мир победил, стакан оказался сильней. Не в этот раз, нужно залечить раны.';break;
+                    case 2: txt = 'Экоактивисты добились своего. Строительство прикрыли, ты проиграл.';break;
+                    case 3: txt = 'Йо! Здоровье в порядке, все бургеры отшлёпаны. Ты выиграл этот бой, бой.';break;
+                    case 4: txt = 'Леса спасены, деньги сохранены, все довольны.';break;
                 }
-                txt = 'Победа';
 
                 button_txt = 'CONTINUE';
 
@@ -553,11 +595,11 @@ LVL = [
 
 BUT = [
     {id:0,name:"clicker",unlock:0,frames:2},
-    {id:1,name:"f",unlock:1500,frames:2},
-    {id:2,name:"coin",unlock:4000,frames:5},
-    {id:3,name:"dont",unlock:6000,frames:2},
-    {id:4,name:"milos",unlock:20000,frames:2},
-    {id:5,name:"pig",unlock:100000,frames:5},
+    {id:1,name:"f",unlock:300,frames:2},
+    {id:2,name:"coin",unlock:600,frames:5},
+    {id:3,name:"dont",unlock:900,frames:2},
+    {id:4,name:"milos",unlock:1200,frames:2},
+    {id:5,name:"pig",unlock:15000,frames:5},
 ];
 
 let sound_on = true;
@@ -586,12 +628,13 @@ GameData = class {
        // this.global=global;
 
 
-        if (localStorage.getItem("2420_first")== null)
+        if (localStorage.getItem("2420_maxscore")== null)
             localStorage.clear();
 
         this.score = 0;
         this.booster_num = [0,0,0,0,0];
         this.first = 1;
+        this.maxscore = 0;
         if (localStorage.getItem("2420_score")!= null)
         {
             this.score = parseInt(localStorage.getItem("2420_score"));
@@ -600,6 +643,8 @@ GameData = class {
                 this.booster_num[i] = parseInt(localStorage.getItem("2420_booster"+i));
 
             this.first = parseInt(localStorage.getItem("2420_first"));
+
+            this.maxscore =  parseInt(localStorage.getItem("2420_maxscore"));
 
         }
 
@@ -611,7 +656,8 @@ GameData = class {
 
     saveData ()  {
 
-        localStorage.setItem("2420_score",this.score)
+        localStorage.setItem("2420_score",this.score);
+        localStorage.setItem("2420_maxscore",this.maxscore);
         for (let i=0;i<5;i++)
             localStorage.setItem("2420_booster"+i,this.booster_num[i]);
 
@@ -1003,6 +1049,13 @@ States.Main.prototype = {
                         this.snd[this.curr].play();
                     game_data.score+=100;
 
+                    if (game_data.score>game_data.maxscore)
+                    {
+                        game_data.maxscore = game_data.score;
+
+                        this.global.shop.checkUnlock();
+                    }
+
                     this.global.button_pepe.show();
 
                     if (Math.random()>0.9 && !this.global.bubble.group.visible)
@@ -1033,10 +1086,12 @@ States.Main.prototype = {
 
             this.group.add(this.back);
 
-            this.group.visible = false;
+
 
 
             this.button = [];
+            this.locked = [];
+            this.locker = [];
 
             let xy = [[0,0],[-1,1],[1,1],[-1,2],[1,2],[0,3]]
 
@@ -1066,10 +1121,25 @@ States.Main.prototype = {
                 this.button[i].scale.setTo(1.5);
                 this.button[i].anchor.setTo(0.5);
                 this.group.add(this.button[i]);
+
+
+                this.locked.push(game_data.maxscore<BUT[i].unlock);
+
+                this.locker.push(this.global.game.add.image(this.button[i].x,this.button[i].y,'main-shop-locked'));
+
+                this.locker[i].anchor.setTo(0.5);
+                this.locker[i].visible = this.locked[i];
+                this.button[i].visible = !this.locked[i];
+
+                this.group.add(this.locker[i]);
+
             }
 
+            this.group.visible = false;
             this.opened = -1;
 
+
+            this.aa = 0;
 
             this.global.game.input.onDown.add(this.onClick,this);
 
@@ -1087,6 +1157,8 @@ States.Main.prototype = {
                 tw.start();
             }
         }
+
+
 
         onClick() {
 
@@ -1108,6 +1180,29 @@ States.Main.prototype = {
 
         }
 
+
+        checkUnlock() {
+            for (let i=0;i<6;i++)
+                if (this.locked[i] && BUT[i].unlock<=game_data.maxscore)
+                {
+                    this.locked[i] = false
+                    this.locker[i].visible = false;
+                    this.button[i].visible = true;
+
+
+                    this.global.button_shop.frame = 1;
+
+                    this.aa = 0;
+
+                    let tw = this.global.game.add.tween(this);
+                    tw.to({aa:100},2000);
+                    tw.onUpdateCallback(function () {
+                        this.global.button_shop.x = WIDTH/2+Math.cos(this.aa)*8;
+                    }, this﻿﻿);
+                    tw.start();﻿
+                }
+        }
+
         open() {
             this.group.visible = true;
 
@@ -1116,6 +1211,7 @@ States.Main.prototype = {
 
         close(){
             this.group.visible = false;
+            this.global.button_shop.frame = 0;
         }
 
 
@@ -1151,6 +1247,7 @@ States.Main.prototype = {
     reset : function(){
         game_data.score = 0;
 
+        game_data.maxscore = 0;
 
 
         for (let i=0;i<5;i++)

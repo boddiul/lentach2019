@@ -67,6 +67,10 @@ States.Preloader.prototype = {
         this.load.spritesheet('main-booster3','assets/main/booster3.png',50,50);
         this.load.spritesheet('main-booster4','assets/main/booster4.png',50,50);
 
+
+        this.load.image('main-shop-locked','assets/main/shop_locked.png');
+
+
         this.load.spritesheet('main-level','assets/main/button_level.png',72,72);
 
 
