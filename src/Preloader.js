@@ -74,7 +74,7 @@ States.Preloader.prototype = {
 
         this.load.spritesheet('main-clicker','assets/main/button_clicker.png',225,90);
         this.load.spritesheet('main-coin','assets/main/button_coin.png',500/5,100);
-        this.load.spritesheet('main-dont','assets/main/button_dont.png',345/2,163);
+        this.load.spritesheet('main-dont','assets/main/button_dont.png',168/2,44);
         this.load.spritesheet('main-f','assets/main/button_f.png',200/2,102);
         this.load.spritesheet('main-pig','assets/main/button_pig.png',500/5,100);
         this.load.spritesheet('main-milos','assets/main/button_milos.png',250/2,125);
