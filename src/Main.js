@@ -374,7 +374,7 @@ MessageBox = class {
                 txt = 'Отлично, ты прошел всю капчу. Но это не значит, что ты не можешь пройти её ещё раз — играй в игры и зарабатывай дополнительные мемы!';
 
 
-
+                button_frame = 0;
                 break;
 
             case 'boost_cant':
@@ -605,10 +605,10 @@ LVL = [
 BUT = [
     {id:0,name:"clicker",unlock:0,frames:2},
     {id:1,name:"f",unlock:300,frames:2},
-    {id:2,name:"coin",unlock:8000,frames:5},
-    {id:3,name:"dont",unlock:50000,frames:2},
-    {id:4,name:"milos",unlock:100000,frames:2},
-    {id:5,name:"pig",unlock:500000,frames:5},
+    {id:2,name:"coin",unlock:4000,frames:5},
+    {id:3,name:"dont",unlock:10000,frames:2},
+    {id:4,name:"milos",unlock:50000,frames:2},
+    {id:5,name:"pig",unlock:100000,frames:5},
 ];
 
 getKoef = function (num) {
@@ -1477,6 +1477,14 @@ States.Main.prototype = {
         }
 
 
+        if (last_game)
+        {
+            last_game = false;
+
+            this.message_box.show('final');
+        }
+
+
 
         music_volley.stop();
         music_pacman.stop();
@@ -1629,6 +1637,7 @@ function openMiniGame(name)
     }
 }
 
+let last_game = false;
 function onExitState(win = -1) {
 
 
@@ -1642,9 +1651,23 @@ function onExitState(win = -1) {
     {
 
 
-
         if (game_data.booster_num[win]===0)
+        {
+            let wwas = 0;
+            let nnow = 0;
+            for (let i=0;i<5;i++)
+                if (game_data.booster_num[i]>0)
+                    wwas+=1;
+
             game_data.buyBooster(win);
+            for (let i=0;i<5;i++)
+                if (game_data.booster_num[i]>0)
+                    nnow+=1;
+
+            if (wwas===4 && nnow===5)
+                last_game = true;
+
+        }
         else
             game_data.score+=Math.round((LVL[win].price+2500)/2);
 
